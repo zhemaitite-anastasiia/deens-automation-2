@@ -10,11 +10,12 @@ public class Login {
 
     @Test
     public void LoginTest(){
+        System.setProperty("webdriver.chrome.driver","src/test/java/chromedriver");
         WebDriver driver = new ChromeDriver();
         driver.get("https://deens-master.now.sh/");
         String homeTagLine = driver.findElement(By.tagName("h1")).getText();
         driver.quit();
-        Assert.assertEquals(homeTagLine, "Wrong value", "Home page Tag Line doesn't match");
+        Assert.assertEquals(homeTagLine, "Customizable travels created by locals for free", "Home page Tag Line doesn't match");
     }
 
 }

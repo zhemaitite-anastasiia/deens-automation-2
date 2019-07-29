@@ -8,5 +8,3 @@ Gradle project using CucumberJVM3 with Testng and Allure reporting.
 2. ```cd deens-automation```
 
 3. ```gradle clean build -i```
-
-4. ```allure serve build/allure-results```
