@@ -1,11 +1,12 @@
 # deens-automation
-After clonning your repository: 
+After cloning your repository:
 1. Check your chrome version. Easiest way: go to this website https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have
-2. If your Chrome version not 75, please download chromedriver that matches your chrome version here https://chromedriver.chromium.org/downloads and replace default one in deens-automation-2/chromedriver
+2. Please download chromedriver that matches your chrome version here https://chromedriver.chromium.org/downloads and put it in deens-automation-2/src/test/java/
+
 ### Steps
 
-1. ```git clone https://gitlab.com/testproio/deens-automation.git```
+1. ```git clone https://gitlab.com/testproio/deens-automation-2.git```
 
-2. ```cd deens-automation```
+2. ```cd deens-automation-2```
 
 3. ```gradle clean build -i```
