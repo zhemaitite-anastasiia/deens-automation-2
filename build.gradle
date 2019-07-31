@@ -1,12 +1,12 @@
-//buildscript {
-//    dependencies {
-//        classpath "io.qameta.allure:allure-gradle:2.5"
-//    }
-//
-//    repositories {
-//        jcenter()
-//    }
-//}
+buildscript {
+    dependencies {
+        classpath "io.qameta.allure:allure-gradle:2.5"
+    }
+
+    repositories {
+        jcenter()
+    }
+}
 
 repositories {
     mavenLocal()
@@ -21,7 +21,7 @@ description = "Customizable Trips created by Locals at no cost!"
 
 
 apply plugin: 'java'
-//apply plugin: 'io.qameta.allure'
+apply plugin: 'io.qameta.allure'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -60,7 +60,7 @@ test {
     }
 }
 
-//allure {
-//    version = '2.6.0'
-//    aspectjweaver = true
-//}
+allure {
+    version = '2.6.0'
+    aspectjweaver = true
+}
