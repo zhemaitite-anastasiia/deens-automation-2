@@ -62,15 +62,15 @@ public class LandingTests {
         WebDriver driver = new ChromeDriver();
         driver.get("https://deens-master.now.sh/");
         // Setting the screen size to Iphone X parameters
-        driver.manage().window().setSize(new Dimension(375,812));
+        driver.manage().window().setSize(new Dimension(375, 812));
         // flag=true, if the menu is visible, flag=false - otherwise
         boolean flag = true;
         try {
-            WebElement navBar = driver.findElement(By.cssSelector("div[class^=\"DesktopNav\""));
+            driver.findElement(By.cssSelector("div[class^=\"DesktopNav\""));
         } catch(NoSuchElementException ex) {
             flag = false;
         }
-        Assert.assertEquals(flag, false, "The top menu is visisble on mobile view.");
+        Assert.assertEquals(flag, false, "The top menu is visible on mobile view.");
         driver.quit();
     }
 }
