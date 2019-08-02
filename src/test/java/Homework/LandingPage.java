@@ -20,7 +20,6 @@ public class LandingPage {
     WebDriver driver;
     @BeforeMethod
     public void beforeMethod(){
-        System.setProperty("webdriver.chrome.driver", "/Users/bondar/Projects/deens-automation-2/src/test/resources/chromedriver");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
     }
