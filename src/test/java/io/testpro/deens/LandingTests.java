@@ -37,8 +37,8 @@ public class LandingTests {
     private void headerIsLoaded() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://deens-master.now.sh/");
-        WebElement header = driver.findElement(By.cssSelector("header[class^=\"TopBar\"]"));
-        Assert.assertEquals(header.isDisplayed(), true, "Landing page header is not displayed.");
+        Assert.assertEquals(driver.findElement(By.cssSelector("header[class^=\"TopBar\"]")).isDisplayed(),
+                true, "Landing page header is not displayed.");
         driver.quit();
     }
 
@@ -46,8 +46,8 @@ public class LandingTests {
     private void logoIsVisible() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://deens-master.now.sh/");
-        WebElement logo = driver.findElement(By.cssSelector("div[class^=\"Logo\""));
-        Assert.assertEquals(logo.isDisplayed(), true, "Logo is not visible.");
+        Assert.assertEquals(driver.findElement(By.cssSelector("div[class^=\"Logo\"")).isDisplayed(),
+                true, "Logo is not visible.");
         driver.quit();
     }
 
@@ -59,8 +59,9 @@ public class LandingTests {
         //Maximizing the screen size
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        WebElement navBar = driver.findElement(By.cssSelector("div[class^=\"DesktopNav\""));
-        Assert.assertEquals(navBar.isDisplayed(), true, "The top menu is not visisble.");
+        Assert.assertEquals(
+                driver.findElement(By.cssSelector("div[class^=\"DesktopNav\"")).isDisplayed(),
+                true,"The top menu is not visisble.");
         driver.quit();
     }
 
