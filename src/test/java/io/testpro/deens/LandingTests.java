@@ -26,7 +26,7 @@ public class LandingTests {
         WebDriverWait wait = new WebDriverWait(driver, 10);
 
         //Click on the trip creator name
-        String tripCreatorNameLink = "[href*=\"beabatravel\"]";
+        String tripCreatorNameLink = "[href*='beabatravel']";
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(tripCreatorNameLink)));
         driver.findElement(By.cssSelector(tripCreatorNameLink)).click();
 
@@ -51,8 +51,8 @@ public class LandingTests {
 
 
         //click right carousel button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[class*=\"Carousel__ButtonRight\"]")));
-        WebElement rightCreatorCarouselButton = driver.findElements(By.cssSelector("button[class*=\"Carousel__ButtonRight\"]")).get(1);
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[class*='Carousel__ButtonRight']")));
+        WebElement rightCreatorCarouselButton = driver.findElements(By.cssSelector("button[class*='Carousel__ButtonRight']")).get(1);
         rightCreatorCarouselButton.click();
 
         //Count the number of trips
