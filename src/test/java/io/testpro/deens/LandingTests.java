@@ -59,8 +59,7 @@ public class LandingTests {
         //Maximizing the screen size
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        Assert.assertEquals(
-                driver.findElement(By.cssSelector("div[class^=\"DesktopNav\"")).isDisplayed(),
+        Assert.assertEquals(driver.findElement(By.cssSelector("div[class^=\"DesktopNav\"")).isDisplayed(),
                 true,"The top menu is not visisble.");
         driver.quit();
     }
