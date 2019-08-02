@@ -6,12 +6,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
+//import org.openqa.selenium.WebDriver.Timeouts;
+import java.util.concurrent.TimeUnit;
 
 //import org.testng.annotations.BeforeTest;
 //import org.testng.annotations.AfterTest;
 //import org.testng.annotations.BeforeSuite;
 //import org.testng.annotations.AfterSuite;
 
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 import org.testng.Assert;
 
@@ -19,15 +23,18 @@ import org.testng.Assert;
 public class LandingTests {
 
     @Test
-    public void TitleIsCorrect() {
+    public void titleIsCorrect() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://deens-master.now.sh/");
-        Assert.assertEquals(driver.getTitle(), "Deens, plan my trip!", "Home page Title doesn't match.");
+        driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+        WebElement waitTitle = (new WebDriverWait(driver, 10))
+                .until(ExpectedConditions.presenceOfElementLocated(By.tagName("title")));
+        Assert.assertEquals(driver.getTitle(), "Deens, plan my trip!", "Landing page titile doesn't match.");
         driver.quit();
     }
 
     @Test
-    private void HeaderIsLoaded() {
+    private void headerIsLoaded() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://deens-master.now.sh/");
         WebElement header = driver.findElement(By.cssSelector("header[class^=\"TopBar\"]"));
@@ -36,7 +43,7 @@ public class LandingTests {
     }
 
     @Test
-    private void LogoIsVisible() {
+    private void logoIsVisible() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://deens-master.now.sh/");
         WebElement logo = driver.findElement(By.cssSelector("div[class^=\"Logo\""));
@@ -46,11 +53,12 @@ public class LandingTests {
 
     // Regular view: verify the top menu navigation bar is loaded
     @Test
-    private void NavBarIsVisible() {
+    private void navBarIsVisible() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://deens-master.now.sh/");
         //Maximizing the screen size
         driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         WebElement navBar = driver.findElement(By.cssSelector("div[class^=\"DesktopNav\""));
         Assert.assertEquals(navBar.isDisplayed(), true, "The top menu is not visisble.");
         driver.quit();
@@ -58,11 +66,12 @@ public class LandingTests {
 
     // Mobile view: verify the top menu navigation bar is NOT loaded
     @Test
-    private void Mobile_NavBarIsNotVisible() {
+    private void mobile_NavBarIsNotVisible() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://deens-master.now.sh/");
         // Setting the screen size to Iphone X parameters
         driver.manage().window().setSize(new Dimension(375, 812));
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         // flag=true, if the menu is visible, flag=false - otherwise
         boolean flag = true;
         try {
