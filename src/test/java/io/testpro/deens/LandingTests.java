@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-
 import java.util.concurrent.TimeUnit;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class LandingTests {
         WebDriver driver = new ChromeDriver();
         driver.get("https://deens-master.now.sh/");
         driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-        WebElement element = (new WebDriverWait(driver, 10))
+        WebElement element = (new WebDriverWait(driver, 20))
                 .until(ExpectedConditions.presenceOfElementLocated(By.tagName("title")));
         Assert.assertEquals(driver.getTitle(), "Deens, plan my trip!", "Landing page titile doesn't match.");
         driver.quit();
@@ -53,8 +52,7 @@ public class LandingTests {
         //Maximizing the screen size
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        Assert.assertEquals(driver.findElement(By.cssSelector("div[class^=\"DesktopNav\"")).isDisplayed(),
-                true,"The top menu is not visisble.");
+        Assert.assertTrue(driver.findElement(By.cssSelector("div[class^=\"DesktopNav\"")).isDisplayed());
         driver.quit();
     }
 
