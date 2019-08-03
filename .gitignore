@@ -1,4 +1,5 @@
 chromedriver
+geckodriver
 *chromedriver.exe
 *.iml
 *.xml
