@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
 import static org.testng.Assert.*;
 
 import java.util.List;
@@ -19,12 +20,12 @@ public class LandingTests {
     WebDriver driver;
 
     @BeforeMethod
-    public void beforeMethod() {
+    public void testSetUp() {
         driver = new ChromeDriver();
     }
 
     @AfterMethod
-    private void afterMethodSetup() {
+    private void testTearDown() {
         driver.quit();
     }
 
@@ -80,13 +81,12 @@ public class LandingTests {
         boolean navbarIsFound = true;
         try {
             driver.findElement(By.cssSelector("div[class^='DesktopNav']"));
-        } catch (NoSuchElementException ex) {
+        } catch ( NoSuchElementException ex ) {
             navbarIsFound = false;
             System.out.println("WebDriver couldn't locate the element.");
-        } catch (WebDriverException ex) {
+        } catch ( WebDriverException ex ) {
             navbarIsFound = false;
-        }
-        finally {
+        } finally {
             assertFalse(navbarIsFound);
         }
     }
