@@ -7,8 +7,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.xml.*;
 
 import java.util.concurrent.TimeUnit;
 import java.util.List;
