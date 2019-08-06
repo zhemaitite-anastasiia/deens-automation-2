@@ -38,19 +38,6 @@ public class Login {
         driver.quit();
     }
 
-    @Test
-    public void LoginEmptyEmailTest2(){
-        WebDriver driver = new ChromeDriver();
-//        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.get("https://deens-master.now.sh/login");
-        driver.findElement(By.cssSelector("#password")).sendKeys("qwerty");
-        driver.findElement(By.cssSelector("[data-testid='loginSubmit']")).click();
-
-        Assert.assertTrue(driver.findElement(By.cssSelector(".ui.error.message")).isDisplayed());
-
-        driver.quit();
-    }
 
     @Test
     public void LoginEmptyPasswordlTest(){
