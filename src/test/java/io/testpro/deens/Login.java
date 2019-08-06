@@ -38,7 +38,6 @@ public class Login {
         driver.quit();
     }
 
-
     @Test
     public void LoginEmptyPasswordlTest(){
         WebDriver driver = new ChromeDriver();
