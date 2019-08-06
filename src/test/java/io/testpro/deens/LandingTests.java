@@ -36,7 +36,6 @@ public class LandingTests {
         WebElement element = (new WebDriverWait(driver, 20))
                 .until(ExpectedConditions.presenceOfElementLocated(By.tagName("title")));
         assertEquals(driver.getTitle(), "Deens, plan my trip!", "Landing page titile doesn't match.");
-        driver.quit();
     }
 
     // Verify header is loaded
@@ -67,7 +66,6 @@ public class LandingTests {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         assertTrue(driver.findElement(By.cssSelector("div[class^=\"DesktopNav\"")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.cssSelector("div[class^='DesktopNav'")).isDisplayed());
-        driver.quit();
     }
 
     // Mobile view: verify the top menu navigation bar is NOT loaded
