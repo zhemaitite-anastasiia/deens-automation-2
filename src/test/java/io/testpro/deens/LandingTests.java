@@ -52,7 +52,7 @@ public class LandingTests {
     @Test
     private void logoIsVisible() {
         driver.get("https://deens-master.now.sh/");
-        assertEquals(driver.findElement(By.cssSelector("div[class^='Logo'")).isDisplayed(),
+        assertEquals(driver.findElement(By.cssSelector("div[class^='Logo']")).isDisplayed(),
                 true, "Logo is not visible.");
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
@@ -64,8 +64,8 @@ public class LandingTests {
         driver.manage().window().maximize();
         driver.get("https://deens-master.now.sh/");
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        assertTrue(driver.findElement(By.cssSelector("div[class^='DesktopNav'")).isDisplayed());
-        Assert.assertTrue(driver.findElement(By.cssSelector("div[class^='DesktopNav'")).isDisplayed());
+        assertTrue(driver.findElement(By.cssSelector("div[class^='DesktopNav']")).isDisplayed());
+        Assert.assertTrue(driver.findElement(By.cssSelector("div[class^='DesktopNav']")).isDisplayed());
     }
 
     // Mobile view: verify the top menu navigation bar is NOT loaded
