@@ -27,7 +27,7 @@ public class Login {
     @Test
     public void LoginEmptyEmailTest(){
         WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
+//        driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("https://deens-master.now.sh/login");
         driver.findElement(By.cssSelector("#password")).sendKeys("qwerty");
