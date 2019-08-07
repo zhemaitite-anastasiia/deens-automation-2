@@ -8,21 +8,25 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 
 import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
 
-public class SignUpTests {
+public class SignUpTests extends BaseTest{
+
+    @BeforeMethod
+    public void openSignUpPage() {
+        driver.get("https://deens-master.now.sh/register");
+    }
+
 
     @Test
-    public void signUpSuccess() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        WebDriverWait wait = new WebDriverWait(driver,10);
+    public void signUpSuccess() {
 
-        driver.get("https://deens-master.now.sh/register");
+
+
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector( "#username"))).sendKeys(generatedUsername());
 
 
@@ -46,25 +50,22 @@ public class SignUpTests {
         driver.findElement(By.xpath("//*[contains(@class,'left labeled button')]")).click();
 
 
-
-//        driver.quit();
     }
 
     @Test
     public void tanyasTestCase() {
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
+
         driver.get("https://deens-master.now.sh/book/trip/nyc-must-see-2-in-new-york-and-vicinity_5cb732c6e5f15f03c87e3639");
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("//div[@class='TripDescription__About-dgtwrt gWDkqv']")));
         driver.findElement(By.xpath("//div[@class='Itinerary__Wrapper-KIerx dDuomi']//div[2]//div[2]//div[2]//h3[1]//a[1]")).click();
 
-        WebDriverWait wait = new WebDriverWait(driver,60);
+//        WebDriverWait wait = new WebDriverWait(driver,60);
+//
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@class='ui blue icon right labeled button']"))).click();
+//        driver.findElement(By.xpath("//button[@class='ui blue icon right labeled button']")).click();
+//        Assert.assertTrue(driver.findElement(By.cssSelector("div.Page-jLerck.dTjQQs div.CheckoutContainer__Wrapper-fzObJW.hCoRWS div.CheckoutContainer__Top-jkYYxN.frSlua div.CheckoutContainer__Steps-fqtMJZ.hksCPU > div.CheckoutContainer__Step-jTOHIe.iauDbA:nth-child(1)")).isDisplayed());
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@class='ui blue icon right labeled button']"))).click();
-        driver.findElement(By.xpath("//button[@class='ui blue icon right labeled button']")).click();
-        Assert.assertTrue(driver.findElement(By.cssSelector("div.Page-jLerck.dTjQQs div.CheckoutContainer__Wrapper-fzObJW.hCoRWS div.CheckoutContainer__Top-jkYYxN.frSlua div.CheckoutContainer__Steps-fqtMJZ.hksCPU > div.CheckoutContainer__Step-jTOHIe.iauDbA:nth-child(1)")).isDisplayed());
-        driver.quit();
     }
 
     public long getTimestamp() {
