@@ -16,6 +16,7 @@ public class Footer_Tests {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("https://deens-master.now.sh/");
         driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(2) > .commonStyles__P-cbpCjc:nth-child(3) > a")).click();
+        Assert.assertTrue(driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(2) > .commonStyles__P-cbpCjc:nth-child(3) > a")).isDisplayed());
         driver.close();
     }
 
@@ -26,6 +27,7 @@ public class Footer_Tests {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("https://deens-master.now.sh/");
         driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(3) > .commonStyles__P-cbpCjc:nth-child(4) > a")).click();
+        Assert.assertTrue(driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(3) > .commonStyles__P-cbpCjc:nth-child(4) > a")).isDisplayed());
         driver.close();
     }
 
@@ -36,6 +38,8 @@ public class Footer_Tests {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("https://deens-master.now.sh/");
         driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(4) a")).click();
+        Assert.assertTrue(driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(4) a")).isDisplayed());
         driver.close();
+        driver.quit();
     }
 }
