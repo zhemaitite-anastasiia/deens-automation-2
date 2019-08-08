@@ -37,9 +37,10 @@ public class MyProfileTests {
     @Test(enabled = true, description = "PC-37 Verify ability to add Bio information in your Profile using Letters only")
     public void addBioInfoTest() {
         driver.findElement(By.xpath("//*[@class='pencil icon']")).click();
-        driver.findElement(By.xpath("//*[@name='biography']")).clear();
+        WebElement biographyTestField = driver.findElement(By.xpath("//*[@name='biography']"));
+        biographyTestField.clear();
         String bioText = "Test Info about User";
-        driver.findElement(By.xpath("//*[@name='biography']")).sendKeys(bioText);
+        biographyTestField.sendKeys(bioText);
         driver.findElement(By.xpath("//*[text()='Save']")).click();
 
         SoftAssert softAssert = new SoftAssert();
@@ -64,8 +65,10 @@ public class MyProfileTests {
     @Test(enabled = true, description = "PC-106 Verify that user can see his/her Profile info - Version 1")
     public void profileInfoTest() {
         String profileTitle = driver.findElement(By.xpath("//*[text()='Biography:']")).getText();
-        
-        Assert.assertEquals(profileTitle, "Biography:");
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(profileTitle, "Biography:");
+        softAssert.assertEquals(driver.getCurrentUrl(), "https://deens-master.now.sh/account/profile");
+        softAssert.assertAll();
 
     }
 
