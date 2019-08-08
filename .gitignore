@@ -1,8 +1,0 @@
-chromedriver
-geckodriver
-*chromedriver.exe
-*.iml
-*.xml
-.idea
-out
-.gradle
