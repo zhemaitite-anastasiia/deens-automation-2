@@ -3,4 +3,6 @@ geckodriver
 *chromedriver.exe
 *.iml
 *.xml
-*.name
+.idea
+out
+.gradle
