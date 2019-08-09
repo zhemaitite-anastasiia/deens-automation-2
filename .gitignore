@@ -3,3 +3,4 @@ chromedriver
 *.iml
 *.xml
 *.name
+.idea/
