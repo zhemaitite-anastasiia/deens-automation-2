@@ -2,12 +2,10 @@ package io.testpro.deens;
 
 
 import java.util.concurrent.TimeUnit;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -200,9 +198,4 @@ public class LandingTests {
         String currentTripName = driver.findElement(By.cssSelector(tripName)).getText();
         assertEquals(currentTripName, expectedTripName);
     }
-<<<<<<< HEAD
 }
-=======
-}
-
->>>>>>> f821d88542d0b163a6146aaed105ad03820c699d
