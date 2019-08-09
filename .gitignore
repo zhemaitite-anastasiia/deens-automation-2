@@ -24,10 +24,13 @@
 hs_err_pid*
 
 
-*chromedriver.exe
+chromedriver.exe
 *.iml
 *.xml
 *.name
 .idea
+#.idea
+build/
 out
 .gradle
+chromedriver
