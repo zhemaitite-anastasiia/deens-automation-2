@@ -2,6 +2,7 @@ package io.testpro.deens;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -16,7 +17,10 @@ public class Footer_Tests {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("https://deens-master.now.sh/");
         driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(2) > .commonStyles__P-cbpCjc:nth-child(3) > a")).click();
-        Assert.assertTrue(driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(2) > .commonStyles__P-cbpCjc:nth-child(3) > a")).isDisplayed());
+
+        String ourPartners = driver.findElement(By.cssSelector("[class='blog__Title-exuQPF iBKNTF']")).getText();
+        Assert.assertEquals(ourPartners, "Our Partners");
+
         driver.close();
     }
 
@@ -27,7 +31,10 @@ public class Footer_Tests {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("https://deens-master.now.sh/");
         driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(3) > .commonStyles__P-cbpCjc:nth-child(4) > a")).click();
-        Assert.assertTrue(driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(3) > .commonStyles__P-cbpCjc:nth-child(4) > a")).isDisplayed());
+
+        String privacyPolicy = driver.findElement(By.cssSelector("[class='blog__Title-exuQPF iBKNTF']")).getText();
+        Assert.assertEquals(privacyPolicy, "Privacy Policy");
+
         driver.close();
     }
 
@@ -38,7 +45,10 @@ public class Footer_Tests {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("https://deens-master.now.sh/");
         driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(4) a")).click();
-        Assert.assertTrue(driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(4) a")).isDisplayed());
+
+        String helpCenter = driver.findElement(By.cssSelector("[class='heading hide-in-mobile']")).getText();
+        Assert.assertEquals(helpCenter, "How can we help you today?");
+
         driver.close();
         driver.quit();
     }
