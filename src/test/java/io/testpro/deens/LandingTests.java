@@ -40,11 +40,11 @@ public class LandingTests {
         driver.manage().window().maximize();
         WebDriverWait myWaitVar = new WebDriverWait(driver,10);
         driver.get("https://deens-master.now.sh/");
-        WebElement logo = driver.findElement(By.cssSelector("div#root a > img"));
-        WebElement earnMoneyLink = driver.findElement(By.cssSelector("[href='/earn-money']"));
+        WebElement logo =myWaitVar.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.cssSelector("div#root a > img")))); driver.findElement(By.cssSelector("div#root a > img"));
+        WebElement earnMoneyLink = myWaitVar.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.cssSelector("[href='/earn-money']"))));
 
-        //action
-        myWaitVar.until(ExpectedConditions.elementToBeClickable(logo)).click();
+        //actions
+        logo.click();
         Assert.assertEquals(driver.getCurrentUrl(), "https://deens-master.now.sh/");
         earnMoneyLink.click();
         logo.click();
@@ -56,12 +56,13 @@ public class LandingTests {
     public void checkNavigationBarContent(){
         //initializing
         driver.manage().window().maximize();
+        WebDriverWait myWaitVar = new WebDriverWait(driver,10);
         driver.get("https://deens-master.now.sh/");
         String[] expectedNavigationBarElements = {"Earn Money","•","Create Trip","Login","Sign up"};
-        WebElement navigationBar = driver.findElement(By.xpath("//div[@class='DesktopNav__Wrap-bgeqrS dHbCgo']"));
+        WebElement navigationBar =myWaitVar.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//div[@class='DesktopNav__Wrap-bgeqrS dHbCgo']"))));
         String[] actualNavigationBarElements = navigationBar.getText().split("\\r?\\n");
 
-        //action
+        //actions
         for (int i=0; i<actualNavigationBarElements.length; i++) {
             Assert.assertEquals(actualNavigationBarElements[i], expectedNavigationBarElements[i]);
         }
@@ -75,10 +76,11 @@ public class LandingTests {
         driver.manage().window().maximize();
         WebDriverWait myWaitVar = new WebDriverWait(driver,10);
         driver.get("https://deens-master.now.sh/");
-        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        WebElement worldPicture = myWaitVar.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//img[contains(@class,'lazyloaded')]")));
+        //Wy the following way is not working???
+        // WebElement worldPicture =myWaitVar.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//img[contains(@class,'lazyloaded')]"))));
 
-        //action
-        WebElement worldPicture = driver.findElement(By.xpath("//img[contains(@class,'lazyloaded')]"));
+        //actions
         Assert.assertTrue(worldPicture.isDisplayed());
         driver.quit();
     }
