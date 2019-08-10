@@ -1,6 +1,7 @@
 package io.testpro.deens;
 
 
+import io.testpro.deens.Pages.LoginPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,31 +13,52 @@ import java.util.concurrent.TimeUnit;
 public class Login extends BaseTest{
 
 
-    @BeforeMethod
-    public void openLoginPage() {
-        driver.get("https://deens-master.now.sh/login");
-    }
-    
 
     @Test
     public void LoginEmptyEmailTest(){
 
-        driver.findElement(By.cssSelector("#password")).sendKeys("qwerty");
-        driver.findElement(By.cssSelector("[data-testid='loginSubmit']")).click();
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.openPage();
+        loginPage.enterPassword("qwerty");
+        loginPage.submit();
 
-        Assert.assertTrue(driver.findElement(By.cssSelector(".ui.error.message")).isDisplayed());
+        Assert.assertTrue(loginPage.errorMessageAppeared());
 
     }
 
     @Test
     public void LoginEmptyPasswordlTest(){
 
-        driver.findElement(By.cssSelector("#email")).sendKeys("azat@testpro.io");
-        driver.findElement(By.cssSelector("[data-testid='loginSubmit']")).click();
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.enterLogin("azat@testpro.io");
+        loginPage.submit();
 
-        Assert.assertTrue(driver.findElement(By.cssSelector(".ui.error.message")).isDisplayed());
+        Assert.assertTrue(loginPage.errorMessageAppeared());
 
     }
+
+    @Test
+    public void LoginIncorrectPasswordlTest(){
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.enterLogin("azat@testpro.io");
+        loginPage.enterPassword("Incorrect password");
+        loginPage.submit();
+
+        Assert.assertTrue(loginPage.errorMessageAppeared());
+
+    }
+//
+//
+//    public void openLogin() {
+//        driver.get("https://deens-master.now.sh/login");
+//    }
+
+
+
+
+
+
 
 
 }
