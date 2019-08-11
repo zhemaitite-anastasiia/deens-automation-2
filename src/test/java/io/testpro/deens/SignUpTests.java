@@ -1,5 +1,6 @@
 package io.testpro.deens;
 
+import io.testpro.deens.Pages.SignUpPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -16,39 +17,23 @@ import java.util.concurrent.TimeUnit;
 
 public class SignUpTests extends BaseTest{
 
-    @BeforeMethod
-    public void openSignUpPage() {
-        driver.get("https://deens-master.now.sh/register");
-    }
 
 
     @Test
     public void signUpSuccess() {
 
+        SignUpPage signUp = new SignUpPage(driver);
 
+        signUp.openPage();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector( "#username"))).sendKeys(generatedUsername());
-
-
-//        driver.findElement(By.cssSelector("#email")).sendKeys(generatedEmail());
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector( "#email"))).sendKeys(generatedEmail());
-
-//        driver.findElement(By.cssSelector("#password")).sendKeys("qwertyqwerty");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector( "#password"))).sendKeys("qwertyqwerty");
-//        driver.findElement(By.cssSelector(".green-btn")).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector( ".green-btn"))).click();
-
-
-
-
-//        WebElement avatar = driver.findElement(By.cssSelector("[class*=\"AvatarWrapper\"]"));
+        signUp.enterUserName(generatedUsername());
+        signUp.enterEmail(generatedEmail());
+        signUp.enterPassword("qwertyqwerty");
+        signUp.submit();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*=\"AvatarWrapper\"]")));
 
         String currentUrl = driver.getCurrentUrl();
         Assert.assertEquals(currentUrl, "https://deens-master.now.sh/");
-        driver.get("https://deens-master.now.sh/my/trips");
-        driver.findElement(By.xpath("//*[contains(@class,'left labeled button')]")).click();
-
 
     }
 
