@@ -39,15 +39,15 @@ public class Footer_Tests {
     }
 
     @Test
-    public void Footer_Help_Center(){
+    public void Footer_Terms(){
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("https://deens-master.now.sh/");
-        driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(4) a")).click();
+        driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(3) > .commonStyles__P-cbpCjc:nth-child(3) > a")).click();
 
-        String helpCenter = driver.findElement(By.cssSelector("[class='heading hide-in-mobile']")).getText();
-        Assert.assertEquals(helpCenter, "How can we help you today?");
+        String terms = driver.findElement(By.cssSelector("[class='blog__Title-exuQPF iBKNTF']")).getText();
+        Assert.assertEquals(terms, "Terms and Conditions");
 
         driver.close();
         driver.quit();
