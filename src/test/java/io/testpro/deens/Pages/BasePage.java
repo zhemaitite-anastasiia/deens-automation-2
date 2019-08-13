@@ -16,18 +16,18 @@ public class BasePage {
         wait =  new WebDriverWait(driver,10);
     }
 
-    public WebElement waitUntilClickable(String locator) {
-        return wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(locator)));
+    public WebElement waitUntilClickable(By locator) {
+        return wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
     public void typeText(String cssLocator, String value) {
-        WebElement element = waitUntilClickable(cssLocator);
+        WebElement element = waitUntilClickable(By.cssSelector(cssLocator));
         element.click();
         element.sendKeys(value);
     }
 
     public void clickToElement(String locator) {
-        WebElement element = waitUntilClickable(locator);
+        WebElement element = waitUntilClickable(By.cssSelector(locator));
         element.click();
     }
 }
