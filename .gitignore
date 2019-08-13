@@ -33,8 +33,4 @@ chromedriver.exe
 build/
 out
 .gradle
-<<<<<<< HEAD
-
-=======
 chromedriver
->>>>>>> 46613e8f868810e4449b6c5be642cbd71721ad89
