@@ -141,16 +141,12 @@ public class LandingTests extends BaseTest {
         LandingPage landingPage = new LandingPage(driver);
         landingPage.openPage();
 
-        //Click on the trip creator name
-        String tripCreatorNameLink = "[href*='beabatravel']";
-        landingPage.waitUntilClickable(By.cssSelector(tripCreatorNameLink)).click();
+        //Click on the trip creator name and check that user was redirected to the right page
+        landingPage.clickToTripCreatorName();
+        landingPage.waitUntilClickable(By.cssSelector(".UserBasicInfo__NameDiv-hmhybR"));
 
-        //Check that user was redirected to the right page
-        String userBasicProfileName = ".UserBasicInfo__NameDiv-hmhybR";
-        String expectedLink = "https://deens-master.now.sh/user/beabatravel";
         String currentLink = driver.getCurrentUrl();
-        landingPage.waitUntilClickable(By.cssSelector(userBasicProfileName));
-        assertEquals(currentLink, expectedLink);
+        assertEquals(currentLink, "https://deens-master.now.sh/user/beabatravel");
     }
 
     // Verify the list of available creator trips
@@ -158,15 +154,10 @@ public class LandingTests extends BaseTest {
     public void listOfCreatorTripsCheckTest() {
         LandingPage landingPage = new LandingPage(driver);
         landingPage.openPage();
+        landingPage.clickRightCreatorCarouselButton();
 
-        //click right carousel button
-        landingPage.waitUntilClickable(By.cssSelector("button[class*='Carousel__ButtonRight']"));
-        WebElement rightCreatorCarouselButton = driver.findElements(By.cssSelector("button[class*='Carousel__ButtonRight']")).get(1);
-        rightCreatorCarouselButton.click();
-
-        //Count the number of trips
-        List<WebElement> listOfCreatorTrips = driver.findElements(By.xpath("//main/div[6]//*[@class='slick-slide' or @class='slick-slide slick-active slick-current']"));
-        assertEquals(listOfCreatorTrips.size(), 5);
+        //Check the number of trips
+        assertEquals(landingPage.getSizeOflistOfCreatorTrips(), 5);
     }
 
     // Verify that clicking on creators trip name redirects to the trip details page
@@ -175,14 +166,9 @@ public class LandingTests extends BaseTest {
         LandingPage landingPage = new LandingPage(driver);
         landingPage.openPage();
 
-        //Open Romantic week-end in NYC
-        String romanticNewYorkImageLink = "//main/div[6]//*[@class='slick-slide slick-active']//*[@title='Romantic week-end in NYC']";
-        landingPage.waitUntilClickable(By.xpath(romanticNewYorkImageLink)).click();
-
-        //Check that user was redirected to the right page
-        String tripName = ".Header__Title-eurZFS";
-        String expectedTripName = "Romantic week-end in NYC";
-        String currentTripName = landingPage.waitUntilClickable(By.cssSelector(tripName)).getText();
-        assertEquals(currentTripName, expectedTripName);
+        //Open "Romantic week-end in NYC" and Check that user was redirected to the right page
+        landingPage.openTripFromCreatorList(landingPage.romanticNewYorkImageLink);
+        String currentTripName = landingPage.getTripNameFromTheTripPage();
+        assertEquals(currentTripName, "Romantic week-end in NYC");
     }
 }
