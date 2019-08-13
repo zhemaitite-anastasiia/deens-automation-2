@@ -50,6 +50,6 @@ public class Footer_Tests {
         Assert.assertEquals(terms, "Terms and Conditions");
 
         driver.close();
-        driver.quit();
+
     }
 }
