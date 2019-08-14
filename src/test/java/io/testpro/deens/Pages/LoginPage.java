@@ -14,14 +14,17 @@ public class LoginPage extends BasePage {
     }
 
     public void enterPassword(String password) {
+
         typeText("#password", password);
     }
 
     public void enterLogin(String username) {
+
         typeText("#email", username);
     }
 
     public void submit() {
+
         driver.findElement(By.cssSelector("[data-testid='loginSubmit']")).click();
     }
 
@@ -29,7 +32,8 @@ public class LoginPage extends BasePage {
         return driver.findElement(By.cssSelector(".ui.error.message")).isDisplayed();
     }
 
-    public void openPage() {
+    public void openPage()
+    {
         driver.get("https://deens-master.now.sh/login");
     }
 
