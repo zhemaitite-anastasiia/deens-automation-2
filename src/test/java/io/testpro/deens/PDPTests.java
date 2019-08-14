@@ -23,7 +23,7 @@ public class PDPTests extends BaseTest{
 
 
 
-    @Test(description = "Should open the map on full screen, but map is deleted from the web page")
+    @Test
     public void mapOnFullScreen1(){
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("(//h2[contains(@class, \"commonStyles\")])[3]")));
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//*[contains(@class, 'ButtonRight')])[1]"))).click();
