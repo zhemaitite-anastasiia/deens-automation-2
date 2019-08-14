@@ -11,13 +11,14 @@ public class BasePage {
     WebDriver driver;
     WebDriverWait wait;
 
+
     public BasePage(WebDriver driver) {
         this.driver = driver;
         wait =  new WebDriverWait(driver,10);
     }
 
     public WebElement waitUntilClickable(String locator) {
-        return wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(locator)));
+        return wait.until(ExpectedConditions.elementToBeClickable(By.xpath(locator)));
     }
 
     public void typeText(String cssLocator, String value) {
