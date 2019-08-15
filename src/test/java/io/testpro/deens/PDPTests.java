@@ -48,7 +48,8 @@ public class PDPTests extends BaseTest{
 
         homePage.scrollTill("(//h2[contains(@class,\"commonStyles\")])[3]");
         basePage.waitUntilClickable("(//*[contains(@class, 'ButtonRight')])[1]");
-        basePage.clickToElement("(//*[contains(@class, 'ButtonRight')])[1]");
+
+        //        basePage.clickToElement("(//*[contains(@class, 'ButtonRight')])[1]");
         basePage.waitUntilClickable("//*[@title='Paris with love, for a romantic 3 days in the capital of love']");
         basePage.clickToElement("//*[@title='Paris with love, for a romantic 3 days in the capital of love']");
         homePage.scrollTill("//div[contains(@class, \"Itinerary__Title\")]");
