@@ -26,14 +26,14 @@ public class SignUpTests extends BaseTest{
 
         signUp.openPage();
 
-//        signUp.enterUserName(generatedUsername());
-//        signUp.enterEmail(generatedEmail());
-//        signUp.enterPassword("qwertyqwerty");
-//        signUp.submit();
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*=\"AvatarWrapper\"]")));
-//
-//        String currentUrl = driver.getCurrentUrl();
-//        Assert.assertEquals(currentUrl, "https://deens-master.now.sh/");
+        signUp.enterUserName(generatedUsername());
+        signUp.enterEmail(generatedEmail());
+        signUp.enterPassword("qwertyqwerty");
+        signUp.submit();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*=\"AvatarWrapper\"]")));
+
+        String currentUrl = driver.getCurrentUrl();
+        Assert.assertEquals(currentUrl, "https://deens-master.now.sh/");
 
     }
 
