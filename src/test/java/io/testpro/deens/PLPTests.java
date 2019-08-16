@@ -41,7 +41,6 @@ public class PLPTests {
         Assert.assertTrue(driver.findElement(By.xpath("//span[contains(text(),'3 ')]")).isDisplayed());
 
 
-
     }
 
     @Test
