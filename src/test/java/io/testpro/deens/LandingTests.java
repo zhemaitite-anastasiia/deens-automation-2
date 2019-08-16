@@ -2,12 +2,12 @@ package io.testpro.deens;
 
 
 import java.util.concurrent.TimeUnit;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import io.testpro.deens.Pages.LandingPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -20,19 +20,7 @@ import static org.testng.Assert.*;
 import java.util.NoSuchElementException;
 
 
-public class LandingTests {
-    WebDriver driver;
-
-    @BeforeMethod
-    public void testSetUp() {
-        driver = new ChromeDriver();
-    }
-
-    @AfterMethod
-    private void testTearDown() {
-        driver.quit();
-    }
-
+public class LandingTests extends BaseTest {
 
     @Test //Vladimir
     public void checkLogoLink(){
@@ -40,11 +28,11 @@ public class LandingTests {
         driver.manage().window().maximize();
         WebDriverWait myWaitVar = new WebDriverWait(driver,10);
         driver.get("https://deens-master.now.sh/");
-        WebElement logo = driver.findElement(By.cssSelector("div#root a > img"));
-        WebElement earnMoneyLink = driver.findElement(By.cssSelector("[href='/earn-money']"));
+        WebElement logo =myWaitVar.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.cssSelector("div#root a > img")))); driver.findElement(By.cssSelector("div#root a > img"));
+        WebElement earnMoneyLink = myWaitVar.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.cssSelector("[href='/earn-money']"))));
 
-        //action
-        myWaitVar.until(ExpectedConditions.elementToBeClickable(logo)).click();
+        //actions
+        logo.click();
         Assert.assertEquals(driver.getCurrentUrl(), "https://deens-master.now.sh/");
         earnMoneyLink.click();
         logo.click();
@@ -56,12 +44,13 @@ public class LandingTests {
     public void checkNavigationBarContent(){
         //initializing
         driver.manage().window().maximize();
+        WebDriverWait myWaitVar = new WebDriverWait(driver,10);
         driver.get("https://deens-master.now.sh/");
         String[] expectedNavigationBarElements = {"Earn Money","•","Create Trip","Login","Sign up"};
-        WebElement navigationBar = driver.findElement(By.xpath("//div[@class='DesktopNav__Wrap-bgeqrS dHbCgo']"));
+        WebElement navigationBar =myWaitVar.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//div[@class='DesktopNav__Wrap-bgeqrS dHbCgo']"))));
         String[] actualNavigationBarElements = navigationBar.getText().split("\\r?\\n");
 
-        //action
+        //actions
         for (int i=0; i<actualNavigationBarElements.length; i++) {
             Assert.assertEquals(actualNavigationBarElements[i], expectedNavigationBarElements[i]);
         }
@@ -75,10 +64,11 @@ public class LandingTests {
         driver.manage().window().maximize();
         WebDriverWait myWaitVar = new WebDriverWait(driver,10);
         driver.get("https://deens-master.now.sh/");
-        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        WebElement worldPicture = myWaitVar.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//img[contains(@class,'lazyloaded')]")));
+        //Wy the following way is not working???
+        // WebElement worldPicture =myWaitVar.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//img[contains(@class,'lazyloaded')]"))));
 
-        //action
-        WebElement worldPicture = driver.findElement(By.xpath("//img[contains(@class,'lazyloaded')]"));
+        //actions
         Assert.assertTrue(worldPicture.isDisplayed());
         driver.quit();
     }
@@ -148,57 +138,37 @@ public class LandingTests {
     // Verify trip creator name link
     @Test
     public void tripCreatorNameCheckTest() {
-        driver.manage().window().maximize();
-        driver.get("https://deens-master.now.sh/");
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        LandingPage landingPage = new LandingPage(driver);
+        landingPage.openPage();
 
-        //Click on the trip creator name
-        String tripCreatorNameLink = "[href*='beabatravel']";
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(tripCreatorNameLink)));
-        driver.findElement(By.cssSelector(tripCreatorNameLink)).click();
+        //Click on the trip creator name and check that user was redirected to the right page
+        landingPage.clickToTripCreatorName();
+        landingPage.waitUntilClickable(By.cssSelector(".UserBasicInfo__NameDiv-hmhybR"));
 
-        //Check that user was redirected to the right page
-        String userBasicProfileName = ".UserBasicInfo__NameDiv-hmhybR";
-        String expectedLink = "https://deens-master.now.sh/user/beabatravel";
         String currentLink = driver.getCurrentUrl();
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(userBasicProfileName)));
-        assertEquals(currentLink, expectedLink);
+        assertEquals(currentLink, "https://deens-master.now.sh/user/beabatravel");
     }
 
     // Verify the list of available creator trips
     @Test
     public void listOfCreatorTripsCheckTest() {
-        driver.manage().window().maximize();
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        driver.get("https://deens-master.now.sh/");
-        //click right carousel button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[class*='Carousel__ButtonRight']")));
-        WebElement rightCreatorCarouselButton = driver.findElements(By.cssSelector("button[class*='Carousel__ButtonRight']")).get(1);
-        rightCreatorCarouselButton.click();
+        LandingPage landingPage = new LandingPage(driver);
+        landingPage.openPage();
+        landingPage.clickRightCreatorCarouselButton();
 
-        //Count the number of trips
-        List<WebElement> listOfCreatorTrips = driver.findElements(By.xpath("//main/div[6]//*[@class='slick-slide' or @class='slick-slide slick-active slick-current']"));
-        assertEquals(listOfCreatorTrips.size(), 5);
+        //Check the number of trips
+        assertEquals(landingPage.getSizeOflistOfCreatorTrips(), 5);
     }
 
     // Verify that clicking on creators trip name redirects to the trip details page
     @Test
     public void creatorTripNameCheckTest() {
-        driver.manage().window().maximize();
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        driver.get("https://deens-master.now.sh/");
+        LandingPage landingPage = new LandingPage(driver);
+        landingPage.openPage();
 
-        //Open Romantic week-end in NYC
-        String romanticNewYorkImageLink = "//main/div[6]//*[@class='slick-slide slick-active']//*[@title='Romantic week-end in NYC']";
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath(romanticNewYorkImageLink)));
-        driver.findElement(By.xpath(romanticNewYorkImageLink)).click();
-
-        //Check that user was redirected to the right page
-        String tripName = ".Header__Title-eurZFS";
-        String expectedTripName = "Romantic week-end in NYC";
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(tripName)));
-        String currentTripName = driver.findElement(By.cssSelector(tripName)).getText();
-        assertEquals(currentTripName, expectedTripName);
+        //Open "Romantic week-end in NYC" and Check that user was redirected to the right page
+        landingPage.openTripFromCreatorList(landingPage.romanticNewYorkImageLink);
+        String currentTripName = landingPage.getTripNameFromTheTripPage();
+        assertEquals(currentTripName, "Romantic week-end in NYC");
     }
 }
-
