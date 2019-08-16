@@ -14,8 +14,25 @@ import javax.swing.border.SoftBevelBorder;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class MyProfileTests {
-    WebDriver driver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+public class MyProfileTests extends BaseTest {
+
     private String login = "mogreat1@gmail.com";
     private String password = "Password1";
     private static By biography = By.xpath("//*[@name='biography']");
@@ -23,27 +40,26 @@ public class MyProfileTests {
 
     @BeforeMethod
     public void setUpAndLogin() {
-        driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         driver.get("https://deens-master.now.sh/");
-        driver.findElement(By.xpath("//*[text()='Login']")).click();
-        driver.findElement(By.cssSelector("#email")).sendKeys(login);
-        driver.findElement(By.cssSelector("#password")).sendKeys(password);
-        driver.findElement(By.xpath("//button[text()='Login']")).click();
-        driver.findElement(By.xpath("//*[@class='ui dropdown']")).click();
-        driver.findElement(By.xpath("//*[text()='Profile']")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[text()='Login']"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#email"))).sendKeys(login);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#password"))).sendKeys(password);
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='Login']"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@class='ui dropdown']"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[text()='Profile']"))).click();
+
     }
 
 
     @Test(enabled = true, description = "PC-37 Verify ability to add Bio information in your Profile using Letters only")
     public void addBioInfoTest() {
-        driver.findElement(By.xpath("//*[@class='pencil icon']")).click();
-        WebElement biographyTestField = driver.findElement(biography);
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@class='pencil icon']"))).click();
+        WebElement biographyTestField = wait.until(ExpectedConditions.visibilityOfElementLocated(biography));
         biographyTestField.clear();
         String bioText = "Test Info about User";
         biographyTestField.sendKeys(bioText);
-        driver.findElement(save).click();
+        wait.until(ExpectedConditions.elementToBeClickable(save)).click();
 
         SoftAssert softAssert = new SoftAssert();
         List<WebElement> textField = driver.findElements(biography);
@@ -51,7 +67,7 @@ public class MyProfileTests {
 
         List<WebElement> saveButton = driver.findElements(save);
         softAssert.assertTrue(saveButton.size() == 0);
-        softAssert.assertTrue(driver.findElement(By.xpath("//span[contains(@class,'Profile__Horizontal')]/p")).getText().contains(bioText));
+        softAssert.assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(@class,'Profile__Horizontal')]/p"))).getText().contains(bioText));
 
         softAssert.assertAll();
 
@@ -59,9 +75,8 @@ public class MyProfileTests {
 
     @Test(enabled = true, description = "PC-103 User can open Review Page - Version 1")
     public void openReviewPageTest() {
-        driver.findElement(By.xpath("//*[contains(@class,'UserBasicInfo__Name')]")).click();
-
-        Assert.assertTrue(driver.findElement(By.xpath("//*[text()='Reviews given to the user']")).isDisplayed());
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[contains(@class,'UserBasicInfo__Name')]"))).click();
+        Assert.assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[text()='Reviews given to the user']"))).isDisplayed());
 
     }
 
@@ -69,15 +84,11 @@ public class MyProfileTests {
     public void profileInfoTest() {
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(driver.findElement(By.xpath("//h2[text()='Profile']")).isDisplayed());
+        softAssert.assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[text()='Profile']"))).isDisplayed());
         softAssert.assertEquals(driver.getCurrentUrl(), "https://deens-master.now.sh/my/profile");
         softAssert.assertAll();
 
     }
 
-    @AfterMethod(enabled = true)
-    public void tearDown() {
-        driver.quit();
-    }
 
 }
