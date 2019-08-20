@@ -9,6 +9,8 @@ public class SignUpPage extends BasePage {
         super(driver);
     }
 
+
+
     public void openPage() {
         driver.get("https://deens-master.now.sh/register");
     }
@@ -28,4 +30,5 @@ public class SignUpPage extends BasePage {
     public void submit() {
         clickToElement(".green-btn");
     }
+
 }
