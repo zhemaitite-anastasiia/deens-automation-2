@@ -15,6 +15,7 @@ import java.util.List;
 import org.openqa.selenium.*;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 import java.util.NoSuchElementException;
@@ -22,12 +23,20 @@ import java.util.NoSuchElementException;
 
 public class LandingTests extends BaseTest {
 
-    @Test //Vladimir
-    public void checkLogoLink(){
-        //initializing
+    // Regular view tests
+    private LandingPage testSetUp() {
+        LandingPage landingPage = new LandingPage(driver);
+        landingPage.openPage();
         driver.manage().window().maximize();
+        return landingPage;
+    }
+
+
+    @Test //Vladimir
+    public void checkLogoLink() {
+        //initializing
+        LandingPage landingPage = testSetUp();
         WebDriverWait myWaitVar = new WebDriverWait(driver,10);
-        driver.get("https://deens-master.now.sh/");
         WebElement logo =myWaitVar.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.cssSelector("div#root a > img")))); driver.findElement(By.cssSelector("div#root a > img"));
         WebElement earnMoneyLink = myWaitVar.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.cssSelector("[href='/earn-money']"))));
 
@@ -37,15 +46,13 @@ public class LandingTests extends BaseTest {
         earnMoneyLink.click();
         logo.click();
         Assert.assertEquals(driver.getCurrentUrl(), "https://deens-master.now.sh/");
-        driver.quit();
     }
 
     @Test //Vladimir
-    public void checkNavigationBarContent(){
+    public void checkNavigationBarContent() {
         //initializing
-        driver.manage().window().maximize();
+        LandingPage landingPage = testSetUp();
         WebDriverWait myWaitVar = new WebDriverWait(driver,10);
-        driver.get("https://deens-master.now.sh/");
         String[] expectedNavigationBarElements = {"Earn Money","•","Create Trip","Login","Sign up"};
         WebElement navigationBar =myWaitVar.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//div[@class='DesktopNav__Wrap-bgeqrS dHbCgo']"))));
         String[] actualNavigationBarElements = navigationBar.getText().split("\\r?\\n");
@@ -54,92 +61,72 @@ public class LandingTests extends BaseTest {
         for (int i=0; i<actualNavigationBarElements.length; i++) {
             Assert.assertEquals(actualNavigationBarElements[i], expectedNavigationBarElements[i]);
         }
-        driver.quit();
     }
 
 
     @Test //Vladimir
-    public void checkWorldPictureClickability(){
+    public void checkWorldPictureClickability() {
         //initializing
-        driver.manage().window().maximize();
+        LandingPage landingPage = testSetUp();
         WebDriverWait myWaitVar = new WebDriverWait(driver,10);
-        driver.get("https://deens-master.now.sh/");
         WebElement worldPicture = myWaitVar.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//img[contains(@class,'lazyloaded')]")));
         //Wy the following way is not working???
         // WebElement worldPicture =myWaitVar.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//img[contains(@class,'lazyloaded')]"))));
 
         //actions
         Assert.assertTrue(worldPicture.isDisplayed());
-        driver.quit();
     }
 
 
     @Test
-    public void titleIsCorrect() {
-        driver.get("https://deens-master.now.sh/");
-        driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-        WebElement element = (new WebDriverWait(driver, 20))
-                .until(ExpectedConditions.presenceOfElementLocated(By.tagName("title")));
+    private void titleIsCorrect() {
+        LandingPage landingPage = testSetUp();
+        landingPage.isPresent(By.tagName("title"));
         assertEquals(driver.getTitle(), "Deens, plan my trip!", "Landing page titile doesn't match.");
     }
 
     // Verify header is loaded
     @Test
     private void headerIsLoaded() {
-        driver.get("https://deens-master.now.sh/");
-        assertEquals(driver.findElement(By.cssSelector("header[class^='TopBar']")).isDisplayed(),
-                true, "Landing page header is not displayed.");
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        Assert.assertTrue(driver.findElement(By.cssSelector("header[class^='TopBar']")).isDisplayed());
+        LandingPage landingPage = testSetUp();
+        assertTrue(landingPage.isVisible(By.cssSelector(landingPage.cssHeader)));
     }
 
     // Verify logo is visible
     @Test
     private void logoIsVisible() {
-        driver.get("https://deens-master.now.sh/");
-        assertEquals(driver.findElement(By.cssSelector("div[class^='Logo']")).isDisplayed(),
-                true, "Logo is not visible.");
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        LandingPage landingPage = testSetUp();
+        assertTrue(landingPage.isVisible(By.cssSelector(landingPage.cssLogo)));
     }
 
-    // Regular view: verify the top menu navigation bar is loaded
+    // Regular view: verify the top menu navigation bar is visible
     @Test
     private void navBarIsVisible() {
-        //Maximizing the screen size
-        driver.manage().window().maximize();
-        driver.get("https://deens-master.now.sh/");
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        assertTrue(driver.findElement(By.cssSelector("div[class^='DesktopNav']")).isDisplayed());
-        Assert.assertTrue(driver.findElement(By.cssSelector("div[class^='DesktopNav']")).isDisplayed());
+        LandingPage landingPage = testSetUp();
+        assertTrue(landingPage.isVisible(By.cssSelector(landingPage.cssNavBar)));
+    }
+
+    // Regular view: verify the top menu navigation has all links
+    @Test
+    private void navBarHasAllLinks() {
+        LandingPage landingPage = testSetUp();
+        assertEquals(landingPage.countNavBarLinks(), 2);
     }
 
     // Mobile view: verify the top menu navigation bar is NOT loaded
     @Test
     private void mobile_NavBarIsNotVisible() {
+        LandingPage landingPage = testSetUp();
         // Setting the screen size to Iphone X parameters
         driver.manage().window().setSize(new Dimension(375, 812));
-        driver.get("https://deens-master.now.sh/");
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        // navbarIsFound=true, if the menu is visible, navbarIsFound=false - otherwise
-        boolean navbarIsFound = true;
-        try {
-            driver.findElement(By.cssSelector("div[class^='DesktopNav']"));
-        } catch ( NoSuchElementException ex ) {
-            navbarIsFound = false;
-            System.out.println("WebDriver couldn't locate the element.");
-        } catch ( WebDriverException ex ) {
-            navbarIsFound = false;
-        } finally {
-            assertFalse(navbarIsFound);
-        }
+        assertTrue(landingPage.waitUntilNotVisible(By.cssSelector(landingPage.cssNavBar)));
     }
 
 
     // Verify trip creator name link
     @Test
     public void tripCreatorNameCheckTest() {
-        LandingPage landingPage = new LandingPage(driver);
-        landingPage.openPage();
+        LandingPage landingPage = testSetUp();
 
         //Click on the trip creator name and check that user was redirected to the right page
         landingPage.clickToTripCreatorName();
@@ -152,8 +139,7 @@ public class LandingTests extends BaseTest {
     // Verify the list of available creator trips
     @Test
     public void listOfCreatorTripsCheckTest() {
-        LandingPage landingPage = new LandingPage(driver);
-        landingPage.openPage();
+        LandingPage landingPage = testSetUp();
         landingPage.clickRightCreatorCarouselButton();
 
         //Check the number of trips
@@ -163,12 +149,39 @@ public class LandingTests extends BaseTest {
     // Verify that clicking on creators trip name redirects to the trip details page
     @Test
     public void creatorTripNameCheckTest() {
-        LandingPage landingPage = new LandingPage(driver);
-        landingPage.openPage();
+        LandingPage landingPage = testSetUp();
 
         //Open "Romantic week-end in NYC" and Check that user was redirected to the right page
         landingPage.openTripFromCreatorList(landingPage.romanticNewYorkImageLink);
         String currentTripName = landingPage.getTripNameFromTheTripPage();
         assertEquals(currentTripName, "Romantic week-end in NYC");
+    }
+
+    // Alex
+    @Test
+    public void Footer_Partners() {
+        LandingPage landingPage = testSetUp();
+        driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(2) > .commonStyles__P-cbpCjc:nth-child(3) > a")).click();
+
+        String ourPartners = driver.findElement(By.cssSelector("[class='blog__Title-exuQPF iBKNTF']")).getText();
+        Assert.assertEquals(ourPartners, "Our Partners");
+    }
+
+    @Test
+    public void Footer_Privacy_Policy() {
+        LandingPage landingPage = testSetUp();
+        driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(3) > .commonStyles__P-cbpCjc:nth-child(4) > a")).click();
+
+        String privacyPolicy = driver.findElement(By.cssSelector("[class='blog__Title-exuQPF iBKNTF']")).getText();
+        Assert.assertEquals(privacyPolicy, "Privacy Policy");
+
+    }
+
+    @Test
+    public void Footer_Terms() {
+        LandingPage landingPage = testSetUp();
+        driver.findElement(By.cssSelector(".BrandFooter__Column-fdSHvo:nth-child(3) > .commonStyles__P-cbpCjc:nth-child(3) > a")).click();
+        String terms = driver.findElement(By.cssSelector("[class='blog__Title-exuQPF iBKNTF']")).getText();
+        Assert.assertEquals(terms, "Terms and Conditions");
     }
 }
