@@ -4,6 +4,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -18,16 +19,16 @@ import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.assertTrue;
 
-public class PDPTests extends BaseTest{
+public class PDPTests extends BaseTest {
 
     @BeforeMethod
-    public void linkAndWait(){
-        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+    public void linkAndWait() {
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
 
     @Test
-    public void mapOnFullScreen1(){
+    public void mapOnFullScreen1() {
         driver.get("https://deens-master.now.sh/");
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("(//h2[contains(@class, \"commonStyles\")])[3]")));
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//*[contains(@class, 'ButtonRight')])[1]"))).click();
@@ -40,7 +41,7 @@ public class PDPTests extends BaseTest{
 
 
     @Test
-    public void clearSearchField(){
+    public void clearSearchField() {
         driver.get("https://deens-master.now.sh/");
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("(//h2[contains(@class, \"commonStyles\")])[3]")));
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//*[contains(@class, 'ButtonRight')])[1]"))).click();
@@ -53,14 +54,13 @@ public class PDPTests extends BaseTest{
     }
 
 
-
     @Test
-    public void createTripBtn(){
+    public void createTripBtn() {
         driver.get("https://deens-master.now.sh/");
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("(//h2[contains(@class, \"commonStyles\")])[3]")));
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//*[contains(@class, 'ButtonRight')])[1]"))).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@title=\"NYC Must See 2\"]"))).click();
-        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true)", driver.findElement(By.xpath("//div[contains(text(),\"Day 2\")]")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true)", driver.findElement(By.xpath("//div[contains(text(),\"Day 2\")]")));
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'Museums')]"))).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@class, \"Results__NotFound\")]//a"))).click();
     }
@@ -105,5 +105,50 @@ public class PDPTests extends BaseTest{
 
     }
 
+    @Test(description = "PC-46 : Verify that Title of chosen Activity on PLP and PDP match.")
+    public void titlePDPvsPLPTest() {
+        driver.get("https://deens-master.now.sh/book/trip/sydney-down-under-in-sydney_5cb8666cef96ce77ca4004f8");
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("//div[@class='Trip__Body-iAJjGV efEoxF']")));
+        String pLpPage = driver.findElement(By.xpath("//div[@class='Itinerary__Wrapper-KIerx dDuomi']//div[2]//div[2]//div[2]//h3[1]//a[1]")).getText();
+        WebElement element = driver.findElement(By.xpath("//div[@class='Itinerary__Wrapper-KIerx dDuomi']//div[2]//div[2]//div[2]//h3[1]//a[1]"));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(element).click().build().perform();
+        String pDpPage = driver.findElement(By.cssSelector("div.Service__HeaderWrap-hXkKZA.cENFIW > h2:nth-child(1)")).getText();
+        Assert.assertEquals(pDpPage, pLpPage);
 
+    }
+
+    @Test (description = "PC-47 : Verify that the Price of chosen activity on PLP and PDP match.")
+    public void pricePDPvsPLPTest(){
+        driver.get("https://deens-master.now.sh/book/trip/sydney-down-under-in-sydney_5cb8666cef96ce77ca4004f8");
+        driver.manage().timeouts().implicitlyWait( 3, TimeUnit.SECONDS);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("//div[@class='Itinerary__Title-bOSMRV iHccEh']")));
+        String pLpLocation = driver.findElement(By.xpath("//div[@class='Itinerary__Wrapper-KIerx dDuomi']//div[2]//div[2]//div[2]//div[3]//p[2]")).getText();
+        pLpLocation = pLpLocation.substring(1);
+        Float f1 = Float.parseFloat(pLpLocation);
+        driver.get("https://deens-master.now.sh/book/accommodation/pullman-quay-grand-sydney-harbour-in-sydney_5bbf7c3662e205f6f00c25c6");
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("//td[contains(text(),'Host')]")));
+        String pDpLocation = driver.findElement(By.xpath("//span[@class='PriceTag__Price-dJFBBM eeIPSW']")).getText();
+        pDpLocation = pDpLocation.substring(1);
+        Float f2 = Float.parseFloat(pDpLocation);
+        Assert.assertEquals(f1, f2);
+
+    }
+
+
+    @Test (description = "PC-48 : Verify that \"Location \" of chosen activity on PLP and PDP match.")
+    public void locationPDPvsPLPTest(){
+        driver.get("https://deens-master.now.sh/book/trip/sydney-down-under-in-sydney_5cb8666cef96ce77ca4004f8");
+        driver.manage().timeouts().implicitlyWait( 3, TimeUnit.SECONDS);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("//div[@class='Itinerary__Title-bOSMRV iHccEh']")));
+        String pLpLocation = driver.findElement(By.xpath("//div[@class='Itinerary__Wrapper-KIerx dDuomi']//div[2]//div[2]//div[2]//div[3]//p[1]")).getText();
+        driver.get("https://deens-master.now.sh/book/accommodation/pullman-quay-grand-sydney-harbour-in-sydney_5bbf7c3662e205f6f00c25c6");
+        String pDpLocation = driver.findElement(By.xpath("//tr[@class='ServiceInformation__Row-kqYfXL bEGdSk']//span[contains(text(),'Sydney, Australia')]")).getText();
+        Assert.assertEquals(pLpLocation, pDpLocation);
+
+    }
 }
+
+
+
+
