@@ -21,6 +21,10 @@ public class BasePage {
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
 
     }
+    public WebElement waitUntilVisibility(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+
+    }
 
     public void typeText(String cssLocator, String value) {
         WebElement element = waitUntilClickable(By.cssSelector(cssLocator));

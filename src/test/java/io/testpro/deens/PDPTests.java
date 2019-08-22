@@ -1,4 +1,5 @@
 package io.testpro.deens;
+import io.testpro.deens.Pages.PDPPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -67,23 +68,25 @@ public class PDPTests extends BaseTest{
 
     @Test(description = "PC-45 : Verify that Google map is presented on the PDP page.")
     public void googleMapPDP() {
-        driver.get("https://deens-master.now.sh/book/trip/the-outer-san-francisco-from-silicon-valley-to-yosemite-in-san-francisco-and-vicinity_5cb865ceef96cec3b64004f6");
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("//div[contains(@class,'TripDescription__About-dgtwrt')]")));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//a[text()='Parc 55 San Francisco - a Hilton Hotel'][1]"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='_atssh']//iframe")));
-        //verivy google map
-        assertTrue(driver.findElement(By.xpath("//div[@id='_atssh']//iframe")).isDisplayed());
+        PDPPage pdpPage= new PDPPage(driver);
+        pdpPage.openTripPage();
+        pdpPage.skrollUntilTripDescription();
+        pdpPage.selectHotel();
+        pdpPage.findMap();
+        Assert.assertTrue(pdpPage.mapPersistsOnPage());
 
     }
 
     @Test(description = "PC-77 : Verify that search by location is available.")
     public void searchByLocationsPDP() {
-        driver.get("https://deens-master.now.sh/book/trip/the-outer-san-francisco-from-silicon-valley-to-yosemite-in-san-francisco-and-vicinity_5cb865ceef96cec3b64004f6");
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("//div[contains(@class,'TripDescription__About')]")));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='Parc 55 San Francisco - a Hilton Hotel'][1]"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[contains(@class,'ServiceInformation__Row-kqYfXL')]//span[contains(text(),'San Francisco, United States of America')]"))).click();
-        //Check all results...
-        List<WebElement> elements = driver.findElements(By.cssSelector(".Results__ResultItem-kYrlTr"));
+        PDPPage pdpPage= new PDPPage(driver);
+        pdpPage.openTripPage();
+        pdpPage.skrollUntilTripDescription();
+        pdpPage.selectHotel();
+
+       pdpPage.clickOnLocation();
+        //List<WebElement> elements = driver.findElements(By.cssSelector(".Results__ResultItem-kYrlTr"));
+        List<WebElement> elements = pdpPage.listOfHotels;
         assertTrue(elements.size() > 0, "There were no trips found");
         SoftAssert softAssert = new SoftAssert();
         for (WebElement element : elements) {
@@ -92,16 +95,19 @@ public class PDPTests extends BaseTest{
             softAssert.assertTrue(text.contains("San Francisco"), "San Francisco not found in trip:" + text);
         }
         softAssert.assertAll();
+
+
     }
 
     @Test(description = "PC-51 : Verify that \"Book now\" button allows to book activity.")
     public void searchVerifyBookNowActivityPDP() {
-        driver.get("https://deens-master.now.sh/book/trip/the-outer-san-francisco-from-silicon-valley-to-yosemite-in-san-francisco-and-vicinity_5cb865ceef96cec3b64004f6");
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("//div[contains(@class,'TripDescription__About')]")));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='Parc 55 San Francisco - a Hilton Hotel'][1]"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".ImgSlider__Wrap-iIVRqG.hdKFky")));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("button[class='ui blue icon right labeled button']"))).click();
-        assertTrue(driver.findElement(By.xpath("//h6[contains(text(),'Book')]")).isDisplayed());
+        PDPPage pdpPage= new PDPPage(driver);
+        pdpPage.openTripPage();
+        pdpPage.skrollUntilTripDescription();
+        pdpPage.selectHotel();
+        pdpPage.waitOnImage();
+        pdpPage.clickOnBookButton();
+        Assert.assertTrue(pdpPage.bookButtonPersitsOnThePage());
 
     }
 
