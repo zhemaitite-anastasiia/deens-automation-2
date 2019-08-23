@@ -14,11 +14,16 @@ import java.util.ArrayList;
 
 
 public class LandingPage extends BasePage {
-
+    public String url = "https://deens-master.now.sh/";
     public String cssLogo = "div[class^='Logo']";
     public String cssHeader = "div[class^='TopBar']";
     public String cssNavBar = "nav[class^='DesktopNav__Nav']";
     public String cssNavBarLinks = "a[class^='DesktopNav__NavLink']";
+    public String cssLoginSignUpMenu = "div[class^='DesktopDropDownMenu'] > div > a";
+    public String cssTopDestinations = "div[class*='SectionTopDestinations__Section']";
+    public String cssTopDestinationsLinks = cssTopDestinations + " h1";
+    public String[] topDestinations = {"Sydney", "York", "Francisco", "London"};
+
     public String romanticNewYorkImageLink =
                 "//main/div[6]//*[@class='slick-slide slick-active']//*[@title='Romantic week-end in NYC']";
 
@@ -26,10 +31,10 @@ public class LandingPage extends BasePage {
         super(driver);
     }
 
-    public void openPage() {
+    public void openPage(String url) {
         driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
         try {
-            driver.get("https://deens-master.now.sh/");
+            driver.get(url);
         } catch (Exception ex) {
             System.out.println("Page was not loaded in 30 seconds." + ex);
         }
@@ -71,6 +76,29 @@ public class LandingPage extends BasePage {
     public int countNavBarLinks() {
         return getNavBarElements().size();
     }
+
+    public List<WebElement> getLoginSignUpLinks() {
+        if(isVisible(By.cssSelector(cssHeader))) {
+            return driver.findElements(By.cssSelector(cssLoginSignUpMenu));
+        }
+        else {
+            return null;
+        }
+    }
+
+    public List<WebElement> getTopDestinations() {
+        if(isVisible(By.cssSelector(cssTopDestinations))) {
+            return driver.findElements(By.cssSelector(cssTopDestinationsLinks));
+        }
+        else {
+            return null;
+        }
+    }
+
+    public int countTopDestinationsLinks() {
+        return getTopDestinations().size();
+    }
+
 
     //Featured Trip Creator From Our Community
     public void clickToTripCreatorName() {
