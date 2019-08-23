@@ -113,7 +113,7 @@ public class PDPTests extends BaseTest {
         WebElement element = driver.findElement(By.xpath("//div[@class='Itinerary__Wrapper-KIerx dDuomi']//div[2]//div[2]//div[2]//h3[1]//a[1]"));
         Actions actions = new Actions(driver);
         actions.moveToElement(element).click().build().perform();
-        String pDpPage = driver.findElement(By.cssSelector("div.Service__HeaderWrap-hXkKZA.cENFIW > h2:nth-child(1)")).getText();
+        String pDpPage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.Service__HeaderWrap-hXkKZA.cENFIW > h2:nth-child(1)"))).getText();
         Assert.assertEquals(pDpPage, pLpPage);
 
     }
