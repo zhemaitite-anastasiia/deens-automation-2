@@ -1,8 +1,6 @@
 package io.testpro.deens.Pages;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
@@ -10,33 +8,33 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import java.util.List;
-
+import java.util.concurrent.TimeUnit;
 
 
 public class PDPPage extends BasePage{
 
-    @FindBy(xpath = "(//h2[contains(@class,\"commonStyles\")])[3]")
+    @FindBy(css = "[class*=\"SectionTrips__SectionHeader\"]>h2")
     private WebElement featuredTripsHeaderOnHomePage;
 
     @FindBy(xpath = "(//*[contains(@class, 'ButtonRight')])[1]")
     private  WebElement rightCaruselBtn;
 
-    @FindBy(xpath = "//*[@title='Paris with love, for a romantic 3 days in the capital of love']")
+    @FindBy(css = "[title = 'Paris with love, for a romantic 3 days in the capital of love']")
     private  WebElement parisWithLoveTrip;
 
-    @FindBy(xpath = "//div[contains(@class, \"Itinerary__Title\")]")
+    @FindBy(css = "[class*= \"Itinerary__Title\"]")
     private WebElement itineraryTitleOnPLP;
 
     @FindBy(xpath = "//div[contains(text(), \"Day 1\")]/..//a[contains(text(), \"Villa d'Estrées\")]")
     private WebElement villaEstréesHotel;
 
-    @FindBy(xpath = "//div[contains(@class, \"Service__HeaderWrap\")]//h2")
-    private WebElement villaEstréesH2Header;
+    @FindBy(css = "[class*=\"Service__HeaderWrap\"]>h2")
+    public WebElement villaEstréesH2Header;
 
-    @FindBy(xpath = "//*[@name=\"search\"]")
+    @FindBy(css = "[name=\"search\"]")
     private WebElement searchBoxElement;
 
-    @FindBy(xpath = "//*[@title=\"NYC Must See 2\"]")
+    @FindBy(css = "[title=\"NYC Must See 2\"]")
     private WebElement nycMustSeeTrip;
 
     @FindBy(xpath = "//div[contains(text(),\"Day 2\")]")
@@ -45,14 +43,19 @@ public class PDPPage extends BasePage{
     @FindBy(xpath = "//span[contains(text(),'Museums')]")
     private  WebElement museumsBtnUnderActivityOnPLP;
 
-    @FindBy(xpath = "//div[contains(@class, \"Results__NotFound\")]//a")
+    @FindBy(css = "[class*=\"Results__NotFound\"] div a")
     private WebElement createTripBtn;
 
-    @FindBy(xpath = "//h2[text() = \"Where do you want to go?\"]")
-    private WebElement h2WhereDoYouWantToGo;
+    @FindBy(css = "[class*=\"Modal__ChildrenContent\"] div h2")
+    public WebElement h2WhereDoYouWantToGo;
 
     @FindBy(xpath = "(//*[@class = 'slick-list'])[1]//*[contains(@class, 'CssOnlyTruncate__TruncateContainer')]")
     private List<WebElement> titleOfTripInFirstCaruselOnHomePage;
+
+    @FindBy(css = "[class *= 'Results__MapOptions'] > div > input")
+    public WebElement checkbox;
+
+    public int quantityOfTripsInList;
 
 
 
@@ -99,8 +102,9 @@ public class PDPPage extends BasePage{
     }
 
 
-    public boolean assertH2HeaderIsDisplayed(){
-        return villaEstréesH2Header.isDisplayed();
+    public String H2HeaderOn_Villa_dEstrees(){
+        String a = wait.until(ExpectedConditions.visibilityOf(villaEstréesH2Header)).getText();
+        return a;
     }
 
 
@@ -124,23 +128,32 @@ public class PDPPage extends BasePage{
     }
 
 
-    public void assertH2onCreateTripPage(){
-        Assert.assertEquals(h2WhereDoYouWantToGo.getText(), "Where do you want to go?");
-    }
-
-
-    public void countFeatureTripsAndListIt(){
+    public void countFeatureTripsAndListThem(){
         List<WebElement> listofFeaturesTrips = titleOfTripInFirstCaruselOnHomePage;
         System.out.println("Total number of Featured trips: " + listofFeaturesTrips.size());
 
-        for (int i = 0; i<listofFeaturesTrips.size(); i++){
+        for (int i = 0; i<listofFeaturesTrips.size(); i++) {
             WebElement titles = listofFeaturesTrips.get(i);
             System.out.println("- " + titles.getText());
         }
-        Assert.assertEquals(listofFeaturesTrips.size(), 6);
+        quantityOfTripsInList = listofFeaturesTrips.size();
     }
 
 
+    public void doSearchAndDisableCheckboxUsingActionsClass() {
+        String mainWindow = driver.getWindowHandle();
+        driver.switchTo().window(mainWindow);
+
+        Actions action = new Actions(driver);
+        action.moveToElement(searchBoxElement).click()
+                .sendKeys("test").keyDown(Keys.LEFT_SHIFT).sendKeys("ng")
+                .keyUp(Keys.LEFT_SHIFT).sendKeys(Keys.ENTER).build().perform();
+
+        if (checkbox.isSelected()){
+            action.moveToElement(checkbox).click().build().perform();
+            System.out.println("Checkbox is unselected now!");
+        }
+    }
 
 }
 
