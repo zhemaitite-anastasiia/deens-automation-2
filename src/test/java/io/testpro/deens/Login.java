@@ -1,7 +1,10 @@
 package io.testpro.deens;
 
 
-import io.testpro.deens.Pages.LoginPage;
+//import io.testpro.deens.Pages.LoginPage;
+
+
+import io.testpro.deens.PageFactory.LoginPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -30,6 +33,7 @@ public class Login extends BaseTest{
     public void LoginEmptyPasswordlTest(){
 
         LoginPage loginPage = new LoginPage(driver);
+        loginPage.openPage();
         loginPage.enterLogin("azat@testpro.io");
         loginPage.submit();
 
@@ -41,6 +45,7 @@ public class Login extends BaseTest{
     public void LoginIncorrectPasswordlTest(){
 
         LoginPage loginPage = new LoginPage(driver);
+        loginPage.openPage();
         loginPage.enterLogin("azat@testpro.io");
         loginPage.enterPassword("Incorrect password");
         loginPage.submit();

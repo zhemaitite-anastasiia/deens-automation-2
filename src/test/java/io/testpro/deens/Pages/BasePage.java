@@ -14,29 +14,27 @@ public class BasePage {
 
 
     public BasePage(WebDriver driver) {
+
         this.driver = driver;
         wait =  new WebDriverWait(driver,10);
         PageFactory.initElements(driver, this);
     }
 
+    public WebElement waitUntilClickable(By locator) {
+        return wait.until(ExpectedConditions.elementToBeClickable(locator));
 
-
-
-
-    public WebElement waitUntilClickable(String locator) {
-        return wait.until(ExpectedConditions.elementToBeClickable(By.xpath(locator)));
     }
 
 
     public void typeText(String cssLocator, String value) {
-        WebElement element = waitUntilClickable(cssLocator);
+        WebElement element = waitUntilClickable(By.cssSelector(cssLocator));
         element.click();
         element.sendKeys(value);
     }
 
 
     public void clickToElement(String locator) {
-        WebElement element = waitUntilClickable(locator);
+        WebElement element = waitUntilClickable(By.cssSelector(locator));
         element.click();
     }
 }
