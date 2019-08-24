@@ -77,27 +77,21 @@ public class PDPTests extends BaseTest{
 
     }
 
+
     @Test(description = "PC-77 : Verify that search by location is available.")
     public void searchByLocationsPDP() {
-        PDPPage pdpPage= new PDPPage(driver);
+        PDPPage pdpPage = new PDPPage(driver);
         pdpPage.openTripPage();
         pdpPage.skrollUntilTripDescription();
         pdpPage.selectHotel();
-
-       pdpPage.clickOnLocation();
+        pdpPage.clickOnLocation();
         //List<WebElement> elements = driver.findElements(By.cssSelector(".Results__ResultItem-kYrlTr"));
         List<WebElement> elements = pdpPage.listOfHotels;
         assertTrue(elements.size() > 0, "There were no trips found");
-        SoftAssert softAssert = new SoftAssert();
-        for (WebElement element : elements) {
-            String text = element.getText();
-            //System.out.println(text);
-            softAssert.assertTrue(text.contains("San Francisco"), "San Francisco not found in trip:" + text);
-        }
-        softAssert.assertAll();
-
-
+        pdpPage.getListOfAllLocations();
+        Assert.assertTrue(elements.contains("San Francisco"), "San Francisco not found in trip:" + elements);
     }
+
 
     @Test(description = "PC-51 : Verify that \"Book now\" button allows to book activity.")
     public void searchVerifyBookNowActivityPDP() {

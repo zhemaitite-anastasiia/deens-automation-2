@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,7 +18,7 @@ public class PDPPage extends BasePage {
     private WebElement scroll;
     @FindBy(xpath = ".//a[text()='Parc 55 San Francisco - a Hilton Hotel'][1]")
     private WebElement hotel;
-    @FindBy(css =".Results__ResultItem-kYrlTr")
+    @FindBy(css = ".Results__ResultItem-kYrlTr")
     public List<WebElement> listOfHotels;
 
     public PDPPage(WebDriver driver) {
@@ -62,6 +63,19 @@ public class PDPPage extends BasePage {
         return driver.findElement(By.xpath("//h6[contains(text(),'Book')]")).isDisplayed();
     }
 
-}
+    public List getListOfAllLocations() {
+        List<WebElement> Locations = driver.findElements(By.cssSelector("[class*=Trip__Location] p"));
+        List<String> LocationTexts = new ArrayList<>();
+
+        for (WebElement element : Locations) {
+            LocationTexts.add(element.getText());
+        }
+        return LocationTexts;
+    }
+
+
+
+    }
+
 
 
