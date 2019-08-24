@@ -76,7 +76,7 @@ public class PDPTests extends BaseTest{
 
 
 
-    
+
     @Test(description = "Does some search and unckeck the checkbox")
     public void disableCheckbox() {
         PDPPage pdpPage = new PDPPage(driver);

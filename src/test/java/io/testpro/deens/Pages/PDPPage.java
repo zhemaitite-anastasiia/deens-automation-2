@@ -83,7 +83,7 @@ public class PDPPage extends BasePage{
 
 
     public void clickOnRightCaruselBtn(){
-       wait.until(ExpectedConditions.elementToBeClickable(rightCaruselBtn)).click();
+        wait.until(ExpectedConditions.elementToBeClickable(rightCaruselBtn)).click();
     }
 
 
