@@ -63,19 +63,29 @@ public class PDPPage extends BasePage {
         return driver.findElement(By.xpath("//h6[contains(text(),'Book')]")).isDisplayed();
     }
 
-    public List getListOfAllLocations() {
+    //public String expectedlocation;
+
+    public boolean getListOfAllLocations(String expectedlocation) {
+        //String expectedlocation="San Francisco";
+
         List<WebElement> Locations = driver.findElements(By.cssSelector("[class*=Trip__Location] p"));
-        List<String> LocationTexts = new ArrayList<>();
+        //       List<String> LocationTexts = new ArrayList<>();
+//
+//        for (WebElement element : Locations) {
+//            //LocationTexts.add(element.getText());
+//        }
+//        return LocationTexts;
 
         for (WebElement element : Locations) {
-            LocationTexts.add(element.getText());
+            String text = element.getText();
+            if (!text.equals(expectedlocation)) {
+                return false;
+            }
         }
-        return LocationTexts;
-    }
-
-
+        return true;
 
     }
+}
 
 
 

@@ -85,11 +85,14 @@ public class PDPTests extends BaseTest{
         pdpPage.skrollUntilTripDescription();
         pdpPage.selectHotel();
         pdpPage.clickOnLocation();
-        //List<WebElement> elements = driver.findElements(By.cssSelector(".Results__ResultItem-kYrlTr"));
-        List<WebElement> elements = pdpPage.listOfHotels;
-        assertTrue(elements.size() > 0, "There were no trips found");
-        pdpPage.getListOfAllLocations();
-        Assert.assertTrue(elements.contains("San Francisco"), "San Francisco not found in trip:" + elements);
+//        List<WebElement> elements = pdpPage.listOfHotels;
+//        assertTrue(elements.size() > 0, "There were no trips found");
+//        pdpPage.getListOfAllLocations();
+ //       Assert.assertTrue(elements.contains("San Francisco"), "San Francisco not found in trip:" + elements);
+
+        //pdpPage.getListOfAllLocations();
+        Assert.assertTrue(pdpPage.getListOfAllLocations("San Francisco"));
+
     }
 
 
