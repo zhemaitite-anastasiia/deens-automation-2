@@ -7,8 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -63,11 +61,7 @@ public class PDPPage extends BasePage {
         return driver.findElement(By.xpath("//h6[contains(text(),'Book')]")).isDisplayed();
     }
 
-    //public String expectedlocation;
-
     public boolean getListOfAllLocations(String expectedlocation) {
-        //String expectedlocation="San Francisco";
-
         List<WebElement> Locations = driver.findElements(By.cssSelector("[class*=Trip__Location] p"));
         //       List<String> LocationTexts = new ArrayList<>();
 //
