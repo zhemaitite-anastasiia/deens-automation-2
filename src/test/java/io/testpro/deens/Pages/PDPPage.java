@@ -17,7 +17,7 @@ public class PDPPage extends BasePage {
     @FindBy(xpath = ".//a[text()='Parc 55 San Francisco - a Hilton Hotel'][1]")
     private WebElement hotel;
     @FindBy(css = ".Results__ResultItem-kYrlTr")
-    public List<WebElement> listOfHotels;
+    private List<WebElement> listOfHotels;
 
     public PDPPage(WebDriver driver) {
         super(driver);
