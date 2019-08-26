@@ -62,7 +62,7 @@ public class PDPPage extends BasePage {
     }
 
     public boolean getListOfAllLocations(String expectedlocation) {
-        List<WebElement> Locations = driver.findElements(By.cssSelector("[class*=Trip__Location] p"));
+        List<WebElement> Locations = listOfHotels;
         //       List<String> LocationTexts = new ArrayList<>();
 //
 //        for (WebElement element : Locations) {
