@@ -73,7 +73,6 @@ public class PDPTests extends BaseTest {
 
     }
 
-
     @Test(description = "PC-77 : Verify that search by location is available.")
     public void searchByLocationsPDP() {
         PDPPage pdpPage= initSetUp();

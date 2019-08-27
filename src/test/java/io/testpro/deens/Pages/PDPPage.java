@@ -24,7 +24,7 @@ public class PDPPage extends BasePage {
     private WebElement bookTab;
     @FindBy(css = "button[class='ui blue icon right labeled button']")
     private WebElement bookButton;
-    @FindBy(css = "//tr[contains(@class,'ServiceInformation__Row-kqYfXL')]//span[contains(text(),'San Francisco, United States of America')]")
+    @FindBy(xpath = "//tr[contains(@class,'ServiceInformation__Row-kqYfXL')]//span[contains(text(),'San Francisco, United States of America')]")
     private WebElement locationLink;
     @FindBy(css = ".ImgSlider__Wrap-iIVRqG.hdKFky")
     private WebElement imageThatShouldBeLoadedToClickOnBookButton;
