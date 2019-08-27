@@ -1,30 +1,23 @@
 package io.testpro.deens;
 import io.testpro.deens.Pages.PDPPage;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import java.util.concurrent.TimeUnit;
 
 
 
 
+public class PDPTests extends BaseTest {
 
 
-public class PDPTests extends BaseTest{
-
-
-
-    private PDPPage testSetup(){
+    private PDPPage testSetup() {
         PDPPage pdpPage = new PDPPage(driver);
         pdpPage.openPage(pdpPage.url);
         return pdpPage;
     }
 
 
-
-
     @Test(description = "Should open the map on full screen, but map is deleted from the web page")
-    public void getOnPDPTripPage(){
+    public void getOnPDPTripPage() {
         PDPPage pdpPage = testSetup();
         pdpPage.scrollTillfeatureTripsCaruselList();
         pdpPage.clickOnRightCaruselBtn();
@@ -35,10 +28,8 @@ public class PDPTests extends BaseTest{
     }
 
 
-
-
     @Test(description = "should clear SearchBox on PDP.")
-    public void clearSearchField(){
+    public void clearSearchField() {
         PDPPage pdpPage = testSetup();
         pdpPage.scrollTillfeatureTripsCaruselList();
         pdpPage.clickOnRightCaruselBtn();
@@ -50,10 +41,8 @@ public class PDPTests extends BaseTest{
     }
 
 
-
-
     @Test(description = "verifies if \"Create Trip\" button works.")
-    public void createTripBtn(){
+    public void createTripBtn() {
         PDPPage pdpPage = testSetup();
         pdpPage.scrollTillfeatureTripsCaruselList();
         pdpPage.clickOnRightCaruselBtn();
@@ -65,10 +54,8 @@ public class PDPTests extends BaseTest{
     }
 
 
-
-
     @Test(description = "counts the trips quantity under of Feature Trips and lists them down in console.")
-    public  void listOfFeatureTrips(){
+    public void listOfFeatureTrips() {
         PDPPage pdpPage = testSetup();
         pdpPage.scrollTillfeatureTripsCaruselList();
         pdpPage.clickOnRightCaruselBtn();
@@ -77,19 +64,11 @@ public class PDPTests extends BaseTest{
     }
 
 
-
-
     @Test(description = "Does some search and unckeck the checkbox")
     public void disableCheckbox() {
         PDPPage pdpPage = testSetup();
         pdpPage.doSearchAndDisableCheckboxUsingActionsClass();
         Assert.assertEquals(pdpPage.checkbox.isSelected(), false, "Checkbox was already unselected!");
     }
-
-
-
-
-
-
 }
 
