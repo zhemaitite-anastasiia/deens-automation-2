@@ -7,11 +7,15 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
 public class PDPPage extends BasePage{
+
+    public String url = "https://deens-master.now.sh/";
 
     @FindBy(css = "[class*=\"SectionTrips__SectionHeader\"]>h2")
     private WebElement featuredTripsHeaderOnHomePage;
@@ -19,20 +23,20 @@ public class PDPPage extends BasePage{
     @FindBy(xpath = "(//*[contains(@class, 'ButtonRight')])[1]")
     private  WebElement rightCaruselBtn;
 
-    @FindBy(css = "[title = 'Paris with love, for a romantic 3 days in the capital of love']")
+    @FindBy(css = "[class*='slick-track'] div:nth-child(6) a")
     private  WebElement parisWithLoveTrip;
 
     @FindBy(css = "[class*= \"Itinerary__Title\"]")
     private WebElement itineraryTitleOnPLP;
 
-    @FindBy(xpath = "//div[contains(text(), \"Day 1\")]/..//a[contains(text(), \"Villa d'Estrées\")]")
+    @FindBy(xpath = "(//*[contains(@class, \"Itinerary__Wrapper\")] // div[contains(@class, 'Itinerary__Day')][1]//h3[contains(@class, 'Itinerary__ServiceTitle')]//a[1])[1]")
     private WebElement villaEstréesHotel;
 
     @FindBy(css = "[class*=\"Service__HeaderWrap\"]>h2")
     public WebElement villaEstréesH2Header;
 
     @FindBy(css = "[name=\"search\"]")
-    private WebElement searchBoxElement;
+    public WebElement searchBoxElement;
 
     @FindBy(css = "[title=\"NYC Must See 2\"]")
     private WebElement nycMustSeeTrip;
@@ -55,8 +59,6 @@ public class PDPPage extends BasePage{
     @FindBy(css = "[class *= 'Results__MapOptions'] > div > input")
     public WebElement checkbox;
 
-    public int quantityOfTripsInList;
-
 
 
 
@@ -70,6 +72,9 @@ public class PDPPage extends BasePage{
 
 
 
+    public void openPage(String url){
+        driver.get(url);
+    }
 
 
     public void clearSearchBox(){
@@ -102,7 +107,7 @@ public class PDPPage extends BasePage{
     }
 
 
-    public String H2HeaderOn_Villa_dEstrees(){
+    public String getTextOf_H2Header_OnVilla_dEstrees(){
         String a = wait.until(ExpectedConditions.visibilityOf(villaEstréesH2Header)).getText();
         return a;
     }
@@ -128,7 +133,7 @@ public class PDPPage extends BasePage{
     }
 
 
-    public void countFeatureTripsAndListThem(){
+    public int countFeatureTripsAndListThem(){
         List<WebElement> listofFeaturesTrips = titleOfTripInFirstCaruselOnHomePage;
         System.out.println("Total number of Featured trips: " + listofFeaturesTrips.size());
 
@@ -136,7 +141,8 @@ public class PDPPage extends BasePage{
             WebElement titles = listofFeaturesTrips.get(i);
             System.out.println("- " + titles.getText());
         }
-        quantityOfTripsInList = listofFeaturesTrips.size();
+        int quantityOfTripsInList = listofFeaturesTrips.size();
+        return quantityOfTripsInList;
     }
 
 
@@ -154,6 +160,9 @@ public class PDPPage extends BasePage{
             System.out.println("Checkbox is unselected now!");
         }
     }
+
+
+
 
 }
 
