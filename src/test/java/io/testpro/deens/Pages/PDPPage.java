@@ -14,10 +14,16 @@ public class PDPPage extends BasePage {
 
     @FindBy(xpath = "//div[contains(@class,'TripDescription__About')]")
     private WebElement scroll;
-    @FindBy(xpath = ".//a[text()='Parc 55 San Francisco - a Hilton Hotel'][1]")
-    private WebElement hotel;
     @FindBy(css = ".Results__ResultItem-kYrlTr")
-    private List<WebElement> listOfHotels;
+    private List<WebElement> listOfTrips;
+    @FindBy(xpath = "//div[@class='Itinerary__Wrapper-KIerx dDuomi']//div[2]//div[2]//div[2]//h3[1]")
+    private WebElement hiltohHotel;
+    @FindBy(xpath = "//div[@id='_atssh']//iframe")
+    private WebElement map;
+    @FindBy(xpath = "//h6[contains(text(),'Book')]")
+    private WebElement bookButton;
+
+
 
     public PDPPage(WebDriver driver) {
         super(driver);
@@ -29,20 +35,20 @@ public class PDPPage extends BasePage {
         driver.get("https://deens-master.now.sh/book/trip/the-outer-san-francisco-from-silicon-valley-to-yosemite-in-san-francisco-and-vicinity_5cb865ceef96cec3b64004f6");
     }
 
-    public void skrollUntilTripDescription() {
+    public void scrollUntilTripDescription() {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", scroll);
     }
 
     public void selectHotel() {
-        waitUntilVisibility(By.xpath(".//a[text()='Parc 55 San Francisco - a Hilton Hotel'][1]")).click();
+        this.hiltohHotel.click();
     }
 
     public void findMap() {
         waitUntilVisibility(By.xpath("//div[@id='_atssh']//iframe"));
     }
 
-    public boolean mapPersistsOnPage() {
-        return driver.findElement(By.xpath("//div[@id='_atssh']//iframe")).isDisplayed();
+    public boolean isMapPersistsOnPage() {
+        return map.isDisplayed();
     }
 
     public void clickOnLocation() {
@@ -57,20 +63,14 @@ public class PDPPage extends BasePage {
         waitUntilVisibility(By.cssSelector("button[class='ui blue icon right labeled button']")).click();
     }
 
-    public boolean bookButtonPersitsOnThePage() {
-        return driver.findElement(By.xpath("//h6[contains(text(),'Book')]")).isDisplayed();
+    public boolean isBookButtonPersitsOnThePage() {
+        //return driver.findElement(By.xpath("//h6[contains(text(),'Book')]")).isDisplayed();
+        return bookButton.isDisplayed();
     }
 
-    public boolean getListOfAllLocations(String expectedlocation) {
-        List<WebElement> Locations = listOfHotels;
-        //       List<String> LocationTexts = new ArrayList<>();
-//
-//        for (WebElement element : Locations) {
-//            //LocationTexts.add(element.getText());
-//        }
-//        return LocationTexts;
-
-        for (WebElement element : Locations) {
+    public boolean isListOfLocationsContainsSanFrancisco(String expectedlocation) {
+        List<WebElement> locations = listOfTrips;
+        for (WebElement element : locations) {
             String text = element.getText();
             if (!text.equals(expectedlocation)) {
                 return false;

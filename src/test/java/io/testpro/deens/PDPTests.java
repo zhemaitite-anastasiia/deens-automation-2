@@ -22,8 +22,10 @@ import static org.testng.Assert.assertTrue;
 public class PDPTests extends BaseTest{
 
     @BeforeMethod
-    public void linkAndWait(){
+   private PDPPage initSetUp(){
+        PDPPage pdpPage= new PDPPage(driver);
         driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+        return pdpPage;
     }
 
 
@@ -68,43 +70,37 @@ public class PDPTests extends BaseTest{
 
     @Test(description = "PC-45 : Verify that Google map is presented on the PDP page.")
     public void googleMapPDP() {
-        PDPPage pdpPage= new PDPPage(driver);
+        PDPPage pdpPage= initSetUp();
         pdpPage.openTripPage();
-        pdpPage.skrollUntilTripDescription();
+        pdpPage.scrollUntilTripDescription();
         pdpPage.selectHotel();
         pdpPage.findMap();
-        Assert.assertTrue(pdpPage.mapPersistsOnPage());
+        Assert.assertTrue(pdpPage.isMapPersistsOnPage());
 
     }
 
 
     @Test(description = "PC-77 : Verify that search by location is available.")
     public void searchByLocationsPDP() {
-        PDPPage pdpPage = new PDPPage(driver);
+        PDPPage pdpPage= initSetUp();
         pdpPage.openTripPage();
-        pdpPage.skrollUntilTripDescription();
+        pdpPage.scrollUntilTripDescription();
         pdpPage.selectHotel();
         pdpPage.clickOnLocation();
-//        List<WebElement> elements = pdpPage.listOfHotels;
-//        assertTrue(elements.size() > 0, "There were no trips found");
-//        pdpPage.getListOfAllLocations();
- //       Assert.assertTrue(elements.contains("San Francisco"), "San Francisco not found in trip:" + elements);
-
-        //pdpPage.getListOfAllLocations();
-        Assert.assertTrue(pdpPage.getListOfAllLocations("San Francisco"));
+        Assert.assertTrue(pdpPage.isListOfLocationsContainsSanFrancisco("San Francisco"));
 
     }
 
 
     @Test(description = "PC-51 : Verify that \"Book now\" button allows to book activity.")
     public void searchVerifyBookNowActivityPDP() {
-        PDPPage pdpPage= new PDPPage(driver);
+        PDPPage pdpPage= initSetUp();
         pdpPage.openTripPage();
-        pdpPage.skrollUntilTripDescription();
+        pdpPage.scrollUntilTripDescription();
         pdpPage.selectHotel();
         pdpPage.waitOnImage();
         pdpPage.clickOnBookButton();
-        Assert.assertTrue(pdpPage.bookButtonPersitsOnThePage());
+        Assert.assertTrue(pdpPage.isBookButtonPersitsOnThePage());
 
     }
 
