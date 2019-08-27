@@ -21,8 +21,13 @@ public class PDPPage extends BasePage {
     @FindBy(xpath = "//div[@id='_atssh']//iframe")
     private WebElement map;
     @FindBy(xpath = "//h6[contains(text(),'Book')]")
+    private WebElement bookTab;
+    @FindBy(css = "button[class='ui blue icon right labeled button']")
     private WebElement bookButton;
-
+    @FindBy(css = "//tr[contains(@class,'ServiceInformation__Row-kqYfXL')]//span[contains(text(),'San Francisco, United States of America')]")
+    private WebElement locationLink;
+    @FindBy(css = ".ImgSlider__Wrap-iIVRqG.hdKFky")
+    private WebElement imageThatShouldBeLoadedToClickOnBookButton;
 
 
     public PDPPage(WebDriver driver) {
@@ -44,7 +49,7 @@ public class PDPPage extends BasePage {
     }
 
     public void findMap() {
-        waitUntilVisibility(By.xpath("//div[@id='_atssh']//iframe"));
+        waitUntilVisibility(map);
     }
 
     public boolean isMapPersistsOnPage() {
@@ -52,15 +57,15 @@ public class PDPPage extends BasePage {
     }
 
     public void clickOnLocation() {
-        waitUntilVisibility(By.xpath("//tr[contains(@class,'ServiceInformation__Row-kqYfXL')]//span[contains(text(),'San Francisco, United States of America')]")).click();
+        waitUntilVisibility(locationLink).click();
     }
 
     public void waitOnImage() {
-        waitUntilVisibility(By.cssSelector(".ImgSlider__Wrap-iIVRqG.hdKFky"));
+        waitUntilVisibility(imageThatShouldBeLoadedToClickOnBookButton);
     }
 
     public void clickOnBookButton() {
-        waitUntilVisibility(By.cssSelector("button[class='ui blue icon right labeled button']")).click();
+        waitUntilVisibility(bookButton).click();
     }
 
     public boolean isBookButtonPersitsOnThePage() {

@@ -9,25 +9,19 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import static org.testng.Assert.assertTrue;
 
 public class PDPTests extends BaseTest {
 
     @BeforeMethod
-   private PDPPage initSetUp(){
+        private PDPPage initSetUp(){
         PDPPage pdpPage= new PDPPage(driver);
         driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
         return pdpPage;
-    }
+   }
 
 
     @Test
