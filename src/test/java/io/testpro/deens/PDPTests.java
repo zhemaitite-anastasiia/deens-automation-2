@@ -97,6 +97,13 @@ public class PDPTests extends BaseTest {
 
     }
 
+    @Test(description = "Verify that trip for 5 days contains itinerary for 5 days")
+    public void verificationOfCountTripsDays(){
+        PDPPage pdpPage= initSetUp();
+        pdpPage.openTripPage();
+        Assert.assertEquals(pdpPage.verificationOfCountDaysInTheTrip(), 5);
+    }
+
     @Test(description = "PC-46 : Verify that Title of chosen Activity on PLP and PDP match.")
     public void titlePDPvsPLPTest() {
         driver.get("https://deens-master.now.sh/book/trip/sydney-down-under-in-sydney_5cb8666cef96ce77ca4004f8");

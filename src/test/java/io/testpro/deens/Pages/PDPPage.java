@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
+import java.util.stream.Stream;
 
 
 public class PDPPage extends BasePage {
@@ -28,7 +29,8 @@ public class PDPPage extends BasePage {
     private WebElement locationLink;
     @FindBy(css = ".ImgSlider__Wrap-iIVRqG.hdKFky")
     private WebElement imageThatShouldBeLoadedToClickOnBookButton;
-
+    @FindBy(css="div.Itinerary__Day-dgFDHM")
+    private List<WebElement> travelList;
 
     public PDPPage(WebDriver driver) {
         super(driver);
@@ -83,6 +85,12 @@ public class PDPPage extends BasePage {
         }
         return true;
 
+    }
+
+    public int verificationOfCountDaysInTheTrip(){
+        List<WebElement> daysInTheTrip= travelList;
+        for (int i=0;i<daysInTheTrip.size(); i++){
+        }return daysInTheTrip.size();
     }
 }
 
