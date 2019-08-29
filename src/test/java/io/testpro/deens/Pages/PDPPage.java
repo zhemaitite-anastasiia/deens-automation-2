@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.asserts.SoftAssert;
+
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -75,15 +77,19 @@ public class PDPPage extends BasePage {
         return bookButton.isDisplayed();
     }
 
-    public boolean isListOfLocationsContainsSanFrancisco(String expectedlocation) {
+    //public boolean isListOfLocationsContainsSanFrancisco(String expectedlocation) {
+    public boolean isListOfLocationsContainsSanFrancisco(String expectedlocation, SoftAssert softAssert) {
+        boolean allLocationsContainExpected = true;
         List<WebElement> locations = listOfTrips;
         for (WebElement element : locations) {
             String text = element.getText();
             if (!text.equals(expectedlocation)) {
-                return false;
+                //return false;
+                softAssert.assertTrue(text.contains("San Francisco"), "San Francisco not found in trip:" + text);
+                allLocationsContainExpected = false;
             }
         }
-        return true;
+        return allLocationsContainExpected;
 
     }
 

@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import java.util.concurrent.TimeUnit;
 
@@ -80,8 +81,9 @@ public class PDPTests extends BaseTest {
         pdpPage.scrollUntilTripDescription();
         pdpPage.selectHotel();
         pdpPage.clickOnLocation();
-        Assert.assertTrue(pdpPage.isListOfLocationsContainsSanFrancisco("San Francisco"));
-
+        SoftAssert softAssert = new SoftAssert();
+        pdpPage.isListOfLocationsContainsSanFrancisco("San Francisco",softAssert);
+        softAssert.assertAll();
     }
 
 
