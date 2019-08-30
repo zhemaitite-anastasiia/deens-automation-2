@@ -1,32 +1,23 @@
 package io.testpro.deens;
 
-
-import java.util.concurrent.TimeUnit;
-
 import io.testpro.deens.Pages.LandingPage;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import java.util.List;
 import org.openqa.selenium.*;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
-import java.util.NoSuchElementException;
-
 
 public class LandingTests extends BaseTest {
 
     // Regular view tests
     private LandingPage testSetUp() {
         LandingPage landingPage = new LandingPage(driver);
-        landingPage.openPage();
+        landingPage.openPage(landingPage.url);
         driver.manage().window().maximize();
         return landingPage;
     }
@@ -78,6 +69,10 @@ public class LandingTests extends BaseTest {
     }
 
 
+    /*
+    /  Header tests
+    */
+
     @Test
     private void titleIsCorrect() {
         LandingPage landingPage = testSetUp();
@@ -122,6 +117,85 @@ public class LandingTests extends BaseTest {
         assertTrue(landingPage.waitUntilNotVisible(By.cssSelector(landingPage.cssNavBar)));
     }
 
+    // Using Actions to Validate Login and Sign Up links by checking that the form was loaded
+    @Test
+    private void validateLoginAndSignUpLinks() {
+        LandingPage landingPage = testSetUp();
+        List<WebElement> links = landingPage.getLoginSignUpLinks();
+        Actions clicker = new Actions(driver);
+        boolean allLinksAreGood = true;
+        for(int i = 0; i < 2; i++) {
+            links = landingPage.getLoginSignUpLinks();
+            System.out.println(links.get(i));
+            clicker.moveToElement(links.get(i)).click().perform();
+            if(!landingPage.isVisible(By.tagName("form"))) {
+                allLinksAreGood = false;
+            }
+            // Switch to the Landing Page
+            clicker.moveToElement(driver.findElement(By.cssSelector("a[class*='Logo']"))).click().perform();
+        }
+        assertTrue(allLinksAreGood);
+    }
+
+
+
+    /*
+    //  Top Destination tests
+    */
+
+    // Regular view: verify the top menu navigation bar is visible
+    @Test
+    private void topDestinationsSectionIsVisible() {
+        LandingPage landingPage = testSetUp();
+        assertTrue(landingPage.isVisible(By.cssSelector(landingPage.cssTopDestinations)));
+    }
+
+    // Regular view: verify the top menu navigation has all links
+    @Test
+    private void topDestinationsSectionHasAllLinks() {
+        LandingPage landingPage = testSetUp();
+        assertEquals(landingPage.countTopDestinationsLinks(), 4);
+    }
+
+
+    // Using JavaExecutor
+    @Test
+    private void validateTopDestinationsLinks() throws InterruptedException {
+        LandingPage landingPage = testSetUp();
+        // Boolean flag - true, if all links are good and have appropriate titles, false - otherwise
+        boolean allLinksAreGood = true;
+        List<WebElement> topDestinationLinks = landingPage.getTopDestinations();
+        int numTopDestinationsLinks = landingPage.countTopDestinationsLinks();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        /*
+        /  Inside the FOR loop:
+        /  1. Clicking on top destination link
+        /  2. Validating the link by checking url of the loaded page
+        /  3. Switching back to the landing page
+        */
+
+        for(int i = 0; i < numTopDestinationsLinks; i++) {
+            // Avoiding StaleElementReferenceException
+            topDestinationLinks = landingPage.getTopDestinations();
+            // Clicking on the link
+            js.executeScript("arguments[0].click();", topDestinationLinks.get(i));
+            // Get url of a current page
+            String currentUrl = driver.getCurrentUrl();
+            // Checking that url contains the target destination
+            if(!currentUrl.contains(landingPage.topDestinations[i])) {
+                allLinksAreGood = false;
+            }
+            // Switch to the Landing Page
+            landingPage.openPage(landingPage.url);
+        }
+        assertTrue(allLinksAreGood);
+    }
+
+
+    /*
+    /  Trip creator tests
+    */
 
     // Verify trip creator name link
     @Test
