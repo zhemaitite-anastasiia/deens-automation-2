@@ -77,14 +77,12 @@ public class PDPPage extends BasePage {
         return bookButton.isDisplayed();
     }
 
-    //public boolean isListOfLocationsContainsSanFrancisco(String expectedlocation) {
     public boolean isListOfLocationsContainsSanFrancisco(String expectedlocation, SoftAssert softAssert) {
         boolean allLocationsContainExpected = true;
         List<WebElement> locations = listOfTrips;
         for (WebElement element : locations) {
             String text = element.getText();
             if (!text.equals(expectedlocation)) {
-                //return false;
                 softAssert.assertTrue(text.contains("San Francisco"), "San Francisco not found in trip:" + text);
                 allLocationsContainExpected = false;
             }
