@@ -1,4 +1,5 @@
 package io.testpro.deens;
+import io.testpro.deens.Pages.PDPPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -8,23 +9,20 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import static org.testng.Assert.assertTrue;
 
 public class PDPTests extends BaseTest {
 
     @BeforeMethod
-    public void linkAndWait() {
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-    }
+        private PDPPage initSetUp(){
+        PDPPage pdpPage= new PDPPage(driver);
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+        return pdpPage;
+   }
 
 
     @Test
@@ -67,42 +65,45 @@ public class PDPTests extends BaseTest {
 
     @Test(description = "PC-45 : Verify that Google map is presented on the PDP page.")
     public void googleMapPDP() {
-        driver.get("https://deens-master.now.sh/book/trip/the-outer-san-francisco-from-silicon-valley-to-yosemite-in-san-francisco-and-vicinity_5cb865ceef96cec3b64004f6");
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("//div[contains(@class,'TripDescription__About-dgtwrt')]")));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//a[text()='Parc 55 San Francisco - a Hilton Hotel'][1]"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='_atssh']//iframe")));
-        //verivy google map
-        assertTrue(driver.findElement(By.xpath("//div[@id='_atssh']//iframe")).isDisplayed());
+        PDPPage pdpPage= initSetUp();
+        pdpPage.openTripPage();
+        pdpPage.scrollUntilTripDescription();
+        pdpPage.selectHotel();
+        pdpPage.findMap();
+        Assert.assertTrue(pdpPage.isMapPersistsOnPage());
 
     }
 
     @Test(description = "PC-77 : Verify that search by location is available.")
     public void searchByLocationsPDP() {
-        driver.get("https://deens-master.now.sh/book/trip/the-outer-san-francisco-from-silicon-valley-to-yosemite-in-san-francisco-and-vicinity_5cb865ceef96cec3b64004f6");
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("//div[contains(@class,'TripDescription__About')]")));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='Parc 55 San Francisco - a Hilton Hotel'][1]"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[contains(@class,'ServiceInformation__Row-kqYfXL')]//span[contains(text(),'San Francisco, United States of America')]"))).click();
-        //Check all results...
-        List<WebElement> elements = driver.findElements(By.cssSelector(".Results__ResultItem-kYrlTr"));
-        assertTrue(elements.size() > 0, "There were no trips found");
+        PDPPage pdpPage= initSetUp();
+        pdpPage.openTripPage();
+        pdpPage.scrollUntilTripDescription();
+        pdpPage.selectHotel();
+        pdpPage.clickOnLocation();
         SoftAssert softAssert = new SoftAssert();
-        for (WebElement element : elements) {
-            String text = element.getText();
-            //System.out.println(text);
-            softAssert.assertTrue(text.contains("San Francisco"), "San Francisco not found in trip:" + text);
-        }
+        pdpPage.isListOfLocationsContainsSanFrancisco("San Francisco",softAssert);
         softAssert.assertAll();
     }
 
+
     @Test(description = "PC-51 : Verify that \"Book now\" button allows to book activity.")
     public void searchVerifyBookNowActivityPDP() {
-        driver.get("https://deens-master.now.sh/book/trip/the-outer-san-francisco-from-silicon-valley-to-yosemite-in-san-francisco-and-vicinity_5cb865ceef96cec3b64004f6");
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("//div[contains(@class,'TripDescription__About')]")));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='Parc 55 San Francisco - a Hilton Hotel'][1]"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".ImgSlider__Wrap-iIVRqG.hdKFky")));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("button[class='ui blue icon right labeled button']"))).click();
-        assertTrue(driver.findElement(By.xpath("//h6[contains(text(),'Book')]")).isDisplayed());
+        PDPPage pdpPage= initSetUp();
+        pdpPage.openTripPage();
+        pdpPage.scrollUntilTripDescription();
+        pdpPage.selectHotel();
+        pdpPage.waitOnImage();
+        pdpPage.clickOnBookButton();
+        Assert.assertTrue(pdpPage.isBookButtonPersitsOnThePage());
 
+    }
+
+    @Test(description = "Verify that trip for 5 days contains itinerary for 5 days")
+    public void verificationOfCountTripsDays(){
+        PDPPage pdpPage= initSetUp();
+        pdpPage.openTripPage();
+        Assert.assertEquals(pdpPage.verificationOfCountDaysInTheTrip(), 5);
     }
 
     @Test(description = "PC-46 : Verify that Title of chosen Activity on PLP and PDP match.")
