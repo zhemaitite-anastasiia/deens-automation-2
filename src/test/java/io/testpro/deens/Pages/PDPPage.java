@@ -14,10 +14,8 @@ import java.util.List;
 import java.util.stream.Stream;
 
 
-
-
 public class PDPPage extends BasePage{
-
+    
     public String url = "https://deens-master.now.sh/";
 
     @FindBy(css = "[class*=\"SectionTrips__SectionHeader\"]>h2")
@@ -90,17 +88,11 @@ public class PDPPage extends BasePage{
     private List<WebElement> travelList;
 
 
-
-
-
-
     public PDPPage(WebDriver driver) {
         super(driver);
         wait = new WebDriverWait(driver, 10);
         PageFactory.initElements(driver, this);
     }
-
-
 
     public void openPage(String url){
         driver.get(url);
@@ -110,26 +102,21 @@ public class PDPPage extends BasePage{
         driver.get("https://deens-master.now.sh/book/trip/the-outer-san-francisco-from-silicon-valley-to-yosemite-in-san-francisco-and-vicinity_5cb865ceef96cec3b64004f6");
     }
 
-
     public void clearSearchBox(){
         wait.until(ExpectedConditions.elementToBeClickable(searchBoxElement)).clear();
     }
-
-
+    
     public void scrollTillfeatureTripsCaruselList(){
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", featuredTripsHeaderOnHomePage);
     }
-
 
     public void clickOnRightCaruselBtn(){
         wait.until(ExpectedConditions.elementToBeClickable(rightCaruselBtn)).click();
     }
 
-
     public void chooseParisWithLoveTrip(){
         wait.until(ExpectedConditions.elementToBeClickable(parisWithLoveTrip)).click();
     }
-
 
     public void scrollTillItineraryTitleOnPLP(){
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", itineraryTitleOnPLP);
@@ -140,61 +127,45 @@ public class PDPPage extends BasePage{
         wait.until(ExpectedConditions.elementToBeClickable(villaEstréesHotel)).click();
     }
 
-
     public String getTextOf_H2Header_OnVilla_dEstrees(){
         String a = wait.until(ExpectedConditions.visibilityOf(villaEstréesH2Header)).getText();
         return a;
     }
 
-
     public void chooseNYC_MustSeeTrip(){
         wait.until(ExpectedConditions.elementToBeClickable(nycMustSeeTrip)).click();
     }
-
 
     public void scrollTillDay2TitleOnPLP(){
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", day2TitleOnPLP);
     }
 
-
     public void clickOnMuseumsBtnUnderActivityOnPLP(){
         wait.until(ExpectedConditions.elementToBeClickable(museumsBtnUnderActivityOnPLP)).click();
     }
-
 
     public void clickOnCreateTripBtn(){
         wait.until(ExpectedConditions.elementToBeClickable(createTripBtn)).click();
     }
 
-
     public int countFeatureTripsAndListThem(){
         List<WebElement> listofFeaturesTrips = titleOfTripInFirstCaruselOnHomePage;
-//        System.out.println("Total number of Featured trips: " + listofFeaturesTrips.size());
-
-//        for (int i = 0; i<listofFeaturesTrips.size(); i++) {
-//            WebElement titles = listofFeaturesTrips.get(i);
-//            System.out.println("- " + titles.getText());
-//        }
         int quantityOfTripsInList = listofFeaturesTrips.size();
         return quantityOfTripsInList;
     }
 
-
     public void doSearchAndDisableCheckboxUsingActionsClass() {
         String mainWindow = driver.getWindowHandle();
         driver.switchTo().window(mainWindow);
-
         Actions action = new Actions(driver);
         action.moveToElement(searchBoxElement).click()
                 .sendKeys("test").keyDown(Keys.LEFT_SHIFT).sendKeys("ng")
                 .keyUp(Keys.LEFT_SHIFT).sendKeys(Keys.ENTER).build().perform();
-
         if (checkbox.isSelected()){
             action.moveToElement(checkbox).click().build().perform();
             System.out.println("Checkbox is unselected now!");
         }
     }
-    
     
     public void scrollUntilTripDescription() {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", scroll);
@@ -225,7 +196,6 @@ public class PDPPage extends BasePage{
     }
 
     public boolean isBookButtonPersitsOnThePage() {
-        //return driver.findElement(By.xpath("//h6[contains(text(),'Book')]")).isDisplayed();
         return bookButton.isDisplayed();
     }
 
@@ -248,9 +218,5 @@ public class PDPPage extends BasePage{
         for (int i=0;i<daysInTheTrip.size(); i++){
         }return daysInTheTrip.size();
     }
-
-
-
-
 }
 
