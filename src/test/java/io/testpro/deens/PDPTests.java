@@ -2,67 +2,88 @@ package io.testpro.deens;
 import io.testpro.deens.Pages.PDPPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
-
 import java.util.concurrent.TimeUnit;
 
+
 public class PDPTests extends BaseTest {
-
+    
     @BeforeMethod
-        private PDPPage initSetUp(){
-        PDPPage pdpPage= new PDPPage(driver);
-        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+    private PDPPage initSetUp() {
+        PDPPage pdpPage = new PDPPage(driver);
         return pdpPage;
-   }
+    }
 
-
-    @Test
-    public void mapOnFullScreen1() {
-        driver.get("https://deens-master.now.sh/");
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("(//h2[contains(@class, \"commonStyles\")])[3]")));
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//*[contains(@class, 'ButtonRight')])[1]"))).click();
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@title='Paris with love, for a romantic 3 days in the capital of love']"))).click();
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("//div[contains(@class, \"Itinerary__Title\")]")));
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(text(), \"Day 1\")]/..//a[contains(text(), \"Villa d'Estrées\")]"))).click();
-        String textHeader = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class, \"Service__HeaderWrap\")]//h2"))).getText();
-        Assert.assertEquals(textHeader, "Villa d'Estrées");
+//Ivan's tests
+    @Test(description = "Should open the map on full screen, but map is deleted from the web page")
+    public void getOnPDPTripPage() {
+        PDPPage pdpPage = initSetUp();
+        pdpPage.openPage(pdpPage.url);
+        pdpPage.scrollTillfeatureTripsCaruselList();
+        pdpPage.clickOnRightCaruselBtn();
+        pdpPage.chooseParisWithLoveTrip();
+        pdpPage.scrollTillItineraryTitleOnPLP();
+        pdpPage.chooseVillaEstréesHotel();
+        Assert.assertEquals(pdpPage.getTextOf_H2Header_OnVilla_dEstrees(), "Villa d'Estrées");
     }
 
 
-    @Test
+    @Test(description = "should clear SearchBox on PDP.")
     public void clearSearchField() {
-        driver.get("https://deens-master.now.sh/");
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("(//h2[contains(@class, \"commonStyles\")])[3]")));
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//*[contains(@class, 'ButtonRight')])[1]"))).click();
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@title='Paris with love, for a romantic 3 days in the capital of love']"))).click();
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("//div[contains(@class, 'Itinerary__Title')]")));
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(text(), \"Day 1\")]/..//a[contains(text(), \"Villa d'Estrées\")]"))).click();
-        String textHeader = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class, \"Service__HeaderWrap\")]//h2"))).getText();
-        Assert.assertEquals(textHeader, "Villa d'Estrées");
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@name=\"search\"]"))).clear();
+        PDPPage pdpPage = initSetUp();
+        pdpPage.openPage(pdpPage.url);
+        pdpPage.scrollTillfeatureTripsCaruselList();
+        pdpPage.clickOnRightCaruselBtn();
+        pdpPage.chooseParisWithLoveTrip();
+        pdpPage.scrollTillItineraryTitleOnPLP();
+        pdpPage.chooseVillaEstréesHotel();
+        pdpPage.clearSearchBox();
+        Assert.assertEquals(pdpPage.searchBoxElement.getAttribute("value"), "");
     }
 
 
-    @Test
+    @Test(description = "verifies if \"Create Trip\" button works.")
     public void createTripBtn() {
-        driver.get("https://deens-master.now.sh/");
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("(//h2[contains(@class, \"commonStyles\")])[3]")));
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//*[contains(@class, 'ButtonRight')])[1]"))).click();
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@title=\"NYC Must See 2\"]"))).click();
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true)", driver.findElement(By.xpath("//div[contains(text(),\"Day 2\")]")));
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'Museums')]"))).click();
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@class, \"Results__NotFound\")]//a"))).click();
+        PDPPage pdpPage = initSetUp();
+        pdpPage.openPage(pdpPage.url);
+        pdpPage.scrollTillfeatureTripsCaruselList();
+        pdpPage.clickOnRightCaruselBtn();
+        pdpPage.chooseNYC_MustSeeTrip();
+        pdpPage.scrollTillDay2TitleOnPLP();
+        pdpPage.clickOnMuseumsBtnUnderActivityOnPLP();
+        pdpPage.clickOnCreateTripBtn();
+        Assert.assertEquals(pdpPage.h2WhereDoYouWantToGo.getText(), "Where do you want to go?");
     }
 
+
+    @Test(description = "counts the trips quantity under of Feature Trips and lists them down in console.")
+    public void listOfFeatureTrips() {
+        PDPPage pdpPage = initSetUp();
+        pdpPage.openPage(pdpPage.url);
+        pdpPage.scrollTillfeatureTripsCaruselList();
+        pdpPage.clickOnRightCaruselBtn();
+        pdpPage.countFeatureTripsAndListThem();
+        Assert.assertEquals(pdpPage.countFeatureTripsAndListThem(), 6);
+    }
+
+
+    @Test(description = "Does some search and unckeck the checkbox")
+    public void disableCheckbox() {
+        PDPPage pdpPage = initSetUp();
+        pdpPage.openPage(pdpPage.url);
+        pdpPage.doSearchAndDisableCheckboxUsingActionsClass();
+        Assert.assertEquals(pdpPage.checkbox.isSelected(), false, "Checkbox was already unselected!");
+    }
+    
+    
+
+//Tanya's tests
     @Test(description = "PC-45 : Verify that Google map is presented on the PDP page.")
     public void googleMapPDP() {
         PDPPage pdpPage= initSetUp();
@@ -105,6 +126,10 @@ public class PDPTests extends BaseTest {
         pdpPage.openTripPage();
         Assert.assertEquals(pdpPage.verificationOfCountDaysInTheTrip(), 5);
     }
+    
+    
+    
+    //Michail's tests
 
     @Test(description = "PC-46 : Verify that Title of chosen Activity on PLP and PDP match.")
     public void titlePDPvsPLPTest() {
@@ -149,7 +174,4 @@ public class PDPTests extends BaseTest {
 
     }
 }
-
-
-
 
