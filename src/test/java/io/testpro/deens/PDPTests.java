@@ -1,6 +1,7 @@
 package io.testpro.deens;
 import io.testpro.deens.Pages.PDPPage;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 
@@ -9,6 +10,7 @@ import org.testng.annotations.Test;
 public class PDPTests extends BaseTest {
 
 
+    @BeforeMethod
     private PDPPage initSetUp() {
         PDPPage pdpPage = new PDPPage(driver);
         return pdpPage;
