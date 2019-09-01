@@ -2,15 +2,11 @@ package io.testpro.deens.Pages;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
 
 
 public class PDPPage extends BasePage{
@@ -135,11 +131,8 @@ public class PDPPage extends BasePage{
 
     public int countFeatureTripsAndListThem(){
         List<WebElement> listofFeaturesTrips = titleOfTripInFirstCaruselOnHomePage;
-        System.out.println("Total number of Featured trips: " + listofFeaturesTrips.size());
-
         for (int i = 0; i<listofFeaturesTrips.size(); i++) {
             WebElement titles = listofFeaturesTrips.get(i);
-            System.out.println("- " + titles.getText());
         }
         int quantityOfTripsInList = listofFeaturesTrips.size();
         return quantityOfTripsInList;
