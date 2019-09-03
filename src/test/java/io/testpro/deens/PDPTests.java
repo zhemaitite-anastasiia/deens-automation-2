@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.asserts.SoftAssert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -19,6 +20,7 @@ public class PDPTests extends BaseTest {
         PDPPage pdpPage = new PDPPage(driver);
         return pdpPage;
     }
+
 
 //Ivan's tests
     @Test(description = "Should open the map on full screen, but map is deleted from the web page")
@@ -80,6 +82,14 @@ public class PDPTests extends BaseTest {
         pdpPage.doSearchAndDisableCheckboxUsingActionsClass();
         Assert.assertEquals(pdpPage.checkbox.isSelected(), false, "Checkbox was already unselected!");
     }
+
+
+    @Test(description = "getting search values using DataProvider method", dataProvider = "dataForSearchFiled", dataProviderClass = PDPPage.class)
+    public  void testWithDataProvider(String keyWord1, String keyWord2) throws InterruptedException{
+        PDPPage pdpPage = initSetUp();
+        pdpPage.openPage(pdpPage.url);
+        pdpPage.doSearchUsingDataProvider(keyWord1, keyWord2);
+    }
     
     
 
@@ -126,9 +136,9 @@ public class PDPTests extends BaseTest {
         pdpPage.openTripPage();
         Assert.assertEquals(pdpPage.verificationOfCountDaysInTheTrip(), 5);
     }
-    
-    
-    
+
+
+
     //Michail's tests
 
     @Test(description = "PC-46 : Verify that Title of chosen Activity on PLP and PDP match.")
