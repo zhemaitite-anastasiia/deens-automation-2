@@ -101,7 +101,7 @@ public class PDPPage extends BasePage{
         return  new Object[][] {{"testNG", "645"}, {"Picture", "312"}, {"Cucumber", "123"}};
     }
 
-    public void openPage(String url){
+    public void openPage(){
         driver.get(url);
     }
     
@@ -174,10 +174,9 @@ public class PDPPage extends BasePage{
         }
     }
 
-    public void doSearchUsingDataProvider(String keyWord1, String keyWord2) throws InterruptedException {
+    public void doSearchUsingDataProvider(String keyWord1, String keyWord2) {
         wait.until(ExpectedConditions.elementToBeClickable(searchBoxElement)).clear();
         searchBoxElement.sendKeys(keyWord1, keyWord2);
-        Thread.sleep(2000);
         searchBoxElement.sendKeys(Keys.ENTER);
     }
     

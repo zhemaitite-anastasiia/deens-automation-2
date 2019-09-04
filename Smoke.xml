@@ -10,6 +10,7 @@
     <test name="Example Test" preserve-order="false">
         <classes>
             <class name="io.testpro.deens.Login"/>
+<!--            <class name="io.testpro.deens.PDPTests"/>-->
         </classes>
     </test>
 <!--https://stackoverflow.com/questions/39271226/cucumber-maven-testng-tests-do-not-run-->
