@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.asserts.SoftAssert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -20,11 +21,12 @@ public class PDPTests extends BaseTest {
         return pdpPage;
     }
 
+
 //Ivan's tests
     @Test(description = "Should open the map on full screen, but map is deleted from the web page")
     public void getOnPDPTripPage() {
         PDPPage pdpPage = initSetUp();
-        pdpPage.openPage(pdpPage.url);
+        pdpPage.openPage();
         pdpPage.scrollTillfeatureTripsCaruselList();
         pdpPage.clickOnRightCaruselBtn();
         pdpPage.chooseParisWithLoveTrip();
@@ -37,7 +39,7 @@ public class PDPTests extends BaseTest {
     @Test(description = "should clear SearchBox on PDP.")
     public void clearSearchField() {
         PDPPage pdpPage = initSetUp();
-        pdpPage.openPage(pdpPage.url);
+        pdpPage.openPage();
         pdpPage.scrollTillfeatureTripsCaruselList();
         pdpPage.clickOnRightCaruselBtn();
         pdpPage.chooseParisWithLoveTrip();
@@ -51,7 +53,7 @@ public class PDPTests extends BaseTest {
     @Test(description = "verifies if \"Create Trip\" button works.")
     public void createTripBtn() {
         PDPPage pdpPage = initSetUp();
-        pdpPage.openPage(pdpPage.url);
+        pdpPage.openPage();
         pdpPage.scrollTillfeatureTripsCaruselList();
         pdpPage.clickOnRightCaruselBtn();
         pdpPage.chooseNYC_MustSeeTrip();
@@ -65,7 +67,7 @@ public class PDPTests extends BaseTest {
     @Test(description = "counts the trips quantity under of Feature Trips and lists them down in console.")
     public void listOfFeatureTrips() {
         PDPPage pdpPage = initSetUp();
-        pdpPage.openPage(pdpPage.url);
+        pdpPage.openPage();
         pdpPage.scrollTillfeatureTripsCaruselList();
         pdpPage.clickOnRightCaruselBtn();
         pdpPage.countFeatureTripsAndListThem();
@@ -76,9 +78,17 @@ public class PDPTests extends BaseTest {
     @Test(description = "Does some search and unckeck the checkbox")
     public void disableCheckbox() {
         PDPPage pdpPage = initSetUp();
-        pdpPage.openPage(pdpPage.url);
+        pdpPage.openPage();
         pdpPage.doSearchAndDisableCheckboxUsingActionsClass();
         Assert.assertEquals(pdpPage.checkbox.isSelected(), false, "Checkbox was already unselected!");
+    }
+
+
+    @Test(description = "getting search values using DataProvider method", dataProvider = "dataForSearchFiled", dataProviderClass = PDPPage.class)
+    public  void testWithDataProvider(String keyWord1, String keyWord2) {
+        PDPPage pdpPage = initSetUp();
+        pdpPage.openPage();
+        pdpPage.doSearchUsingDataProvider(keyWord1, keyWord2);
     }
     
     
@@ -126,9 +136,9 @@ public class PDPTests extends BaseTest {
         pdpPage.openTripPage();
         Assert.assertEquals(pdpPage.verificationOfCountDaysInTheTrip(), 5);
     }
-    
-    
-    
+
+
+
     //Michail's tests
 
     @Test(description = "PC-46 : Verify that Title of chosen Activity on PLP and PDP match.")

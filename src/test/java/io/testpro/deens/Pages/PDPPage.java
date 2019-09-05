@@ -9,6 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.DataProvider;
 import org.testng.asserts.SoftAssert;
 import java.util.List;
 import java.util.stream.Stream;
@@ -94,7 +95,13 @@ public class PDPPage extends BasePage{
         PageFactory.initElements(driver, this);
     }
 
-    public void openPage(String url){
+
+    @DataProvider(name = "dataForSearchFiled")
+    public static Object[][] searchData(){
+        return  new Object[][] {{"testNG", "645"}, {"Picture", "312"}, {"Cucumber", "123"}};
+    }
+
+    public void openPage(){
         driver.get(url);
     }
     
@@ -165,6 +172,12 @@ public class PDPPage extends BasePage{
             action.moveToElement(checkbox).click().build().perform();
             System.out.println("Checkbox is unselected now!");
         }
+    }
+
+    public void doSearchUsingDataProvider(String keyWord1, String keyWord2) {
+        wait.until(ExpectedConditions.elementToBeClickable(searchBoxElement)).clear();
+        searchBoxElement.sendKeys(keyWord1, keyWord2);
+        searchBoxElement.sendKeys(Keys.ENTER);
     }
     
     public void scrollUntilTripDescription() {
